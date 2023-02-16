@@ -34,6 +34,8 @@
 
 - [BingGPT-0.1.0-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-linux-x64.deb)
 - [BingGPT-0.1.0-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-linux-arm64.deb)
+- [BingGPT-0.1.0-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-linux-x64.rpm)
+- [BingGPT-0.1.0-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-linux-arm64.rpm)
 
 ## Usage
 

@@ -5,7 +5,7 @@ module.exports = {
     icon: 'icon',
     platforms: ['darwin', 'linux', 'win32'],
     arch: ['x64', 'arm64'],
-    asar: true
+    asar: true,
   },
   rebuildConfig: {},
   makers: [
@@ -34,8 +34,30 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
+          name: 'binggpt',
+          productName: 'BingGPT',
+          description: 'AI-powered answer engine',
+          productDescription: 'AI-powered answer engine',
+          version: '0.1.0',
+          categories: ['Utility'],
           maintainer: 'dice2o',
-          homepage: 'https://github.com/dice2o',
+          homepage: 'https://github.com/dice2o/BingGPT',
+          icon: 'icon.png',
+        },
+      },
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {
+        options: {
+          name: 'binggpt',
+          productName: 'BingGPT',
+          description: 'AI-powered answer engine',
+          productDescription: 'AI-powered answer engine',
+          version: '0.1.0',
+          categories: ['Utility'],
+          maintainer: 'dice2o',
+          homepage: 'https://github.com/dice2o/BingGPT',
           icon: 'icon.png',
         },
       },
