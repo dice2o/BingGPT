@@ -4,6 +4,10 @@
   <p align="center">BingGPT desktop application</p>
 </p>
 
+[![License](https://img.shields.io/badge/license-Apache_2.0-green)](https://opensource.org/licenses/Apache-2.0)
+[![visitor](https://visitor-badge.glitch.me/badge?page_id=dice2o.binggpt)](https://github.com/dice2o/BingGPT)
+[![BingGPT downloads](https://img.shields.io/github/downloads/dice2o/BingGPT/total?color=blue)](https://github.com/dice2o/BingGPT/releases)
+
 ## Install
 
 ### Windows
