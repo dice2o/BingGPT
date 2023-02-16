@@ -1,22 +1,25 @@
-const { app, shell, Menu, BrowserWindow } = require('electron')
+const { app, shell, nativeTheme, Menu, BrowserWindow } = require('electron')
 const contextMenu = require('electron-context-menu')
 const path = require('path')
 
 if (require('electron-squirrel-startup')) app.quit()
 
+// Check color scheme
+const isDarkMode = nativeTheme.shouldUseDarkColors
+
 const createWindow = () => {
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
-    backgroundColor: '#f3f3f3',
+    backgroundColor: isDarkMode ? '#2b2b2b' : '#f3f3f3',
     icon: 'icon.png',
     width: 601,
     height: 800,
     titleBarStyle: 'hidden',
     titleBarOverlay: true,
     titleBarOverlay: {
-      color: '#3b3b3b',
-      symbolColor: '#f3f3f3',
+      color: isDarkMode ? '#3b3b3b' : '#ffffff',
+      symbolColor: isDarkMode ? '#f3f3f3' : '#2b2b2b',
     },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -56,7 +59,9 @@ const createWindow = () => {
   // Get language
   const locale = app.getLocale() || 'en-US'
   // Load Bing
-  const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&darkschemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
+  const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
+    isDarkMode ? 'dark' : 'light'
+  }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.12'
   mainWindow.loadURL(bingUrl, { userAgent: userAgent })
