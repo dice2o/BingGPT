@@ -1,0 +1,27 @@
+{
+  "name": "binggpt",
+  "productName": "BingGPT",
+  "version": "0.1.0",
+  "description": "AI-powered answer engine",
+  "author": "dice2o",
+  "license": "Apache-2.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.5",
+    "@electron-forge/maker-deb": "^6.0.5",
+    "@electron-forge/maker-dmg": "^6.0.5",
+    "@electron-forge/maker-squirrel": "^6.0.5",
+    "@electron-forge/maker-zip": "^6.0.5",
+    "electron": "^23.0.0"
+  },
+  "dependencies": {
+    "electron-context-menu": "^3.6.1",
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
