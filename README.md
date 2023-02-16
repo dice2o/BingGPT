@@ -4,23 +4,31 @@
   <p align="center">BingGPT desktop application</p>
 </p>
 
-[![License](https://img.shields.io/badge/license-Apache_2.0-green)](https://opensource.org/licenses/Apache-2.0)
-[![visitor](https://visitor-badge.glitch.me/badge?page_id=dice2o.binggpt)](https://github.com/dice2o/BingGPT)
-[![BingGPT downloads](https://img.shields.io/github/downloads/dice2o/BingGPT/total?color=blue)](https://github.com/dice2o/BingGPT/releases)
+<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0">
+    <img alt="License" src="https://img.shields.io/badge/license-Apache_2.0-green">
+  </a>
+  <a href="https://github.com/dice2o/BingGPT">
+    <img alt="Visitors" src="https://visitor-badge.glitch.me/badge?page_id=dice2o.binggpt">
+   </a>
+  <a href="https://github.com/dice2o/BingGPT/releases">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/dice2o/BingGPT/total?color=blue">
+   </a>
+</p>
 
 ## Install
 
 ### Windows
 
-- [BingGPT-0.1.0-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-x64-Setup.exe): x64 Installer
-- [BingGPT-0.1.0-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-x64.zip): x64 Portable
-- [BingGPT-0.1.0-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-arm64-Setup.exe): arm64 Installer
-- [BingGPT-0.1.0-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-arm64.zip): arm64 Portable
+- [BingGPT-0.1.0-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-x64-Setup.exe) (Installer)
+- [BingGPT-0.1.0-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-x64.zip) (Portable)
+- [BingGPT-0.1.0-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-arm64-Setup.exe) (Installer)
+- [BingGPT-0.1.0-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-win32-arm64.zip) (Portable)
 
 ### MacOS
 
-- [BingGPT-0.1.0-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-darwin-arm64.dmg): Apple Silicon
-- [BingGPT-0.1.0-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-darwin-x64.dmg): Intel chips
+- [BingGPT-0.1.0-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-darwin-arm64.dmg) (Apple Silicon)
+- [BingGPT-0.1.0-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.0/BingGPT-0.1.0-darwin-x64.dmg) (Intel chips)
 
 ### Linux
 
