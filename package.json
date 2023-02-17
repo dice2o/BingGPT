@@ -1,7 +1,7 @@
 {
   "name": "binggpt",
   "productName": "BingGPT",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AI-powered answer engine",
   "author": "dice2o",
   "license": "Apache-2.0",

@@ -1,13 +1,17 @@
 window.addEventListener('DOMContentLoaded', () => {
   // Change page title
   document.title = 'BingGPT'
-  // Change style
   // Body
-  const body = document.getElementById('bpage')
+  const body = document.body
   if (body) {
     body.style.cssText = 'width: 100%; max-width: 100%; overflow: hidden'
+    // Draggable area
+    const titleBar = document.createElement('div')
+    titleBar.style.cssText =
+      'position: fixed; height: 32px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag; z-index: 50'
+    body.insertBefore(titleBar, body.firstChild)
   }
-  
+  // Content
   const content = document.getElementById('b_content')
   if (content) {
     // Welcome page
@@ -16,25 +20,24 @@ window.addEventListener('DOMContentLoaded', () => {
       signInLink.setAttribute('target', '_self')
     }
     const previewBanner = document.getElementById('underside-sydneypro-module')
+    const previewCloseBtn = document.getElementById(
+      'underside-sydneypromotion-close'
+    )
     if (previewBanner) {
-      const titleBar = document.createElement('div')
-      titleBar.style.cssText =
-        'height: 44px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag'
-      content.parentNode.insertBefore(titleBar, content)
+      previewBanner.style.cssText = 'margin: 44px 0'
+      if (previewCloseBtn) {
+        previewCloseBtn.style.cssText = 'display: none'
+      }
     }
     // Header of main page
     const headerWrapper = document.getElementsByClassName('wrapper-unfixed')[0]
     const tabWrapper = document.getElementsByClassName('uds-hdr-wrapper')[0]
-    const tab = document.getElementsByClassName('uds_tab_hdr')[0]
     if (headerWrapper) {
       headerWrapper.style.cssText = 'height: 64px'
     }
     if (tabWrapper) {
       tabWrapper.style.cssText =
-        'height: 64px; display: flex; justify-content: center; align-items: end; -webkit-user-select: none; -webkit-app-region: drag'
-    }
-    if (tab) {
-      tab.style.cssText = '-webkit-app-region: none'
+        'height: 64px; display: flex; justify-content: center; align-items: end; -webkit-user-select: none'
     }
   }
   // Chat area of main page

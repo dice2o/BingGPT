@@ -4,10 +4,9 @@ const path = require('path')
 
 if (require('electron-squirrel-startup')) app.quit()
 
-// Check color scheme
-const isDarkMode = nativeTheme.shouldUseDarkColors
-
 const createWindow = () => {
+  // Check color scheme
+  const isDarkMode = nativeTheme.shouldUseDarkColors
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
@@ -30,11 +29,12 @@ const createWindow = () => {
   Menu.setApplicationMenu(null)
   // Create context menu
   contextMenu({
+    window: mainWindow.webContents,
     showServices: true,
     showSelectAll: false,
     prepend: (defaultActions, parameters, browserWindow) => [
       {
-        label: 'Refresh',
+        label: 'Reload',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           mainWindow.reload()
@@ -49,9 +49,13 @@ const createWindow = () => {
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           const session = mainWindow.webContents.session
-          session.clearStorageData([]).then(() => {
-            mainWindow.reload()
-          })
+          session
+            .clearStorageData({
+              storages: ['localstorage', 'cookies'],
+            })
+            .then(() => {
+              mainWindow.reload()
+            })
         },
       },
     ],
