@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (content) {
     // Welcome page
     const signInLink = document.getElementsByClassName('signIn')[0]
-    const JoinLink = document.getElementsByClassName('joinWaitList')[0]
+    const joinLink = document.getElementsByClassName('joinWaitList')[0]
     const previewBanner = document.getElementById('underside-sydneypro-module')
     const previewCloseBtn = document.getElementById(
       'underside-sydneypromotion-close'
@@ -26,8 +26,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if (signInLink) {
       signInLink.setAttribute('target', '_self')
     }
-    if (JoinLink) {
-      JoinLink.setAttribute('href', 'https://www.bing.com/new')
+    if (joinLink) {
+      joinLink.setAttribute('href', 'https://www.bing.com/new')
     }
     if (previewBanner) {
       previewBanner.style.cssText = 'margin-top: 44px'
