@@ -68,7 +68,11 @@ const createWindow = () => {
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.12'
-  mainWindow.loadURL(bingUrl, { userAgent: userAgent })
+  const extraHeaders = 'x-forwarded-for: 8.8.8.8'
+  mainWindow.loadURL(bingUrl, {
+    userAgent: userAgent,
+    extraHeaders: extraHeaders,
+  })
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
@@ -80,7 +84,10 @@ const createWindow = () => {
       url.indexOf('https://edgeservices.bing.com/edgesvc/urlredirect') !== -1
     ) {
       event.preventDefault()
-      mainWindow.loadURL(bingUrl, { userAgent: userAgent })
+      mainWindow.loadURL(bingUrl, {
+        userAgent: userAgent,
+        extraHeaders: extraHeaders,
+      })
     }
   })
 }
