@@ -70,7 +70,15 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   // Compose page
   const insertBtn = document.getElementById('insert_button')
+  const previewText = document.getElementById('preview_text')
+  const previewOptions = document.getElementsByClassName('preview-options')[0]
   if (insertBtn) {
     insertBtn.style.cssText = 'display: none'
+  }
+  if (previewText) {
+    previewText.style.cssText = 'height: 100%'
+  }
+  if (previewOptions) {
+    previewOptions.style.cssText = 'bottom: 1px'
   }
 })
