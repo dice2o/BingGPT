@@ -69,9 +69,19 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
   // Compose page
+  const composeWrapper = document.getElementsByClassName(
+    'uds_coauthor_wrapper'
+  )[0]
+  const composeMain = document.getElementsByClassName('main')[0]
   const insertBtn = document.getElementById('insert_button')
   const previewText = document.getElementById('preview_text')
   const previewOptions = document.getElementsByClassName('preview-options')[0]
+  if (composeWrapper) {
+    composeWrapper.style.cssText = 'margin-top: -64px'
+  }
+  if (composeMain) {
+    composeMain.style.cssText = 'height: calc(100% - 64px); margin-top: 64px; padding: 20px 10px'
+  }
   if (insertBtn) {
     insertBtn.style.cssText = 'display: none'
   }
