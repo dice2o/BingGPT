@@ -25,9 +25,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const discoverContent = document.getElementById('uns_section_fixedbottom')
     if (signInLink) {
       signInLink.setAttribute('target', '_self')
-    }
-    if (joinLink) {
-      joinLink.setAttribute('href', 'https://www.bing.com/new')
+      if (joinLink) {
+        joinLink.setAttribute('target', '_self')
+      }
     }
     if (previewBanner) {
       previewBanner.style.cssText = 'margin-top: 44px'

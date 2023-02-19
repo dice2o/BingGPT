@@ -32,7 +32,7 @@ const createWindow = () => {
     window: mainWindow.webContents,
     showServices: true,
     showSelectAll: false,
-    prepend: (defaultActions, parameters, browserWindow) => [
+    append: (defaultActions, parameters, browserWindow) => [
       {
         label: 'Reload',
         visible: parameters.selectionText.trim().length === 0,
@@ -56,6 +56,24 @@ const createWindow = () => {
             .then(() => {
               mainWindow.reload()
             })
+        },
+      },
+      {
+        type: 'separator',
+        visible: parameters.selectionText.trim().length === 0,
+      },
+      {
+        label: 'Report Bug',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          shell.openExternal('https://github.com/dice2o/BingGPT/issues')
+        },
+      },
+      {
+        label: 'BingGPT v0.1.5',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          shell.openExternal('https://github.com/dice2o/BingGPT/releases')
         },
       },
     ],
