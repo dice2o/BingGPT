@@ -68,4 +68,9 @@ window.addEventListener('DOMContentLoaded', () => {
       chatWrapper.style.cssText = 'margin-top: -76px'
     }
   }
+  // Compose page
+  const insertBtn = document.getElementById('insert_button')
+  if (insertBtn) {
+    insertBtn.style.cssText = 'display: none'
+  }
 })
