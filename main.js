@@ -25,7 +25,6 @@ const createWindow = () => {
       devTools: false,
     },
   })
-  mainWindow.setAlwaysOnTop(true, "pop-up-menu")
   // Hide main menu (Windows)
   Menu.setApplicationMenu(null)
   // Create context menu
@@ -34,21 +33,6 @@ const createWindow = () => {
     showServices: true,
     showSelectAll: false,
     append: (defaultActions, parameters, browserWindow) => [
-      {
-        label: 'Always on top: ' + (mainWindow.isAlwaysOnTop() ? "On" : "Off"),
-        visible: parameters.selectionText.trim().length === 0,
-        click: () => {
-          if (mainWindow.isAlwaysOnTop()) {
-            mainWindow.setAlwaysOnTop(false)
-          } else {
-            mainWindow.setAlwaysOnTop(true, "pop-up-menu")
-          }
-        },
-      },
-      {
-        type: 'separator',
-        visible: parameters.selectionText.trim().length === 0,
-      },
       {
         label: 'Reload',
         visible: parameters.selectionText.trim().length === 0,
@@ -73,6 +57,17 @@ const createWindow = () => {
               mainWindow.reload()
             })
         },
+      },
+      {
+        type: 'separator',
+        visible: parameters.selectionText.trim().length === 0,
+      },
+      {
+        label: 'Always on Top',
+        type: 'checkbox',
+        checked: mainWindow.isAlwaysOnTop() ? true : false,
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop()),
       },
       {
         type: 'separator',
