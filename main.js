@@ -63,6 +63,17 @@ const createWindow = () => {
         visible: parameters.selectionText.trim().length === 0,
       },
       {
+        label: 'Always on Top',
+        type: 'checkbox',
+        checked: mainWindow.isAlwaysOnTop() ? true : false,
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop()),
+      },
+      {
+        type: 'separator',
+        visible: parameters.selectionText.trim().length === 0,
+      },
+      {
         label: 'Report Bug',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
