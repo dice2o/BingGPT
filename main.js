@@ -81,7 +81,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.1.5',
+        label: 'BingGPT v0.1.6',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -97,7 +97,7 @@ const createWindow = () => {
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.12'
-  const extraHeaders = 'x-forwarded-for: 8.8.8.8'
+  const extraHeaders = 'x-forwarded-for: 1.1.1.1'
   mainWindow.loadURL(bingUrl, {
     userAgent: userAgent,
     extraHeaders: extraHeaders,
