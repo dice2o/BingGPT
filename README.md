@@ -43,6 +43,8 @@
 - Sign in to your Microsoft account
 - Start chatting
 
+**Note: VPN is needed when launching the app if new Bing is not available in your area. You can exit VPN while chatting.**
+
 ## Screenshot
 
 <img width="601" src="./screenshot.png" alt="BingGPT Screenshot">
