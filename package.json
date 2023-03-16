@@ -1,7 +1,7 @@
 {
   "name": "binggpt",
   "productName": "BingGPT",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "AI-powered answer engine",
   "author": "dice2o",
   "license": "Apache-2.0",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "html2canvas": "^1.4.1"
   }
 }

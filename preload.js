@@ -1,3 +1,6 @@
+const { ipcRenderer } = require('electron')
+const html2canvas = require('html2canvas')
+
 window.addEventListener('DOMContentLoaded', () => {
   // Change page title
   document.title = 'BingGPT'
@@ -7,8 +10,9 @@ window.addEventListener('DOMContentLoaded', () => {
     body.style.cssText = 'width: 100%; max-width: 100%; overflow: hidden'
     // Draggable area
     const titleBar = document.createElement('div')
+    titleBar.id = 'titleBar'
     titleBar.style.cssText =
-      'position: fixed; height: 32px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag; z-index: 50'
+      'position: fixed; top: 0px; height: 32px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag; z-index: 50'
     body.insertBefore(titleBar, body.firstChild)
   }
   // Content
@@ -59,6 +63,14 @@ window.addEventListener('DOMContentLoaded', () => {
     if (insightsTab) {
       insightsTab.style.cssText = 'display: none'
     }
+    // Error
+    if (!previewBanner && !tabs) {
+      const errorInfo = document.createElement('p')
+      errorInfo.textContent = 'Not Available'
+      errorInfo.style.cssText =
+        'padding: 64px 32px; text-align: center; font-size: 20px; font-weight: 600; line-height: 26px;'
+      content.insertBefore(errorInfo, content.firstChild)
+    }
   }
   // Chat area of main page
   const results = document.getElementById('b_results')
@@ -80,7 +92,8 @@ window.addEventListener('DOMContentLoaded', () => {
     composeWrapper.style.cssText = 'margin-top: -64px'
   }
   if (composeMain) {
-    composeMain.style.cssText = 'height: calc(100% - 64px); margin-top: 64px; padding: 20px 10px'
+    composeMain.style.cssText =
+      'height: calc(100% - 64px); margin-top: 64px; padding: 20px 10px'
   }
   if (insertBtn) {
     insertBtn.style.cssText = 'display: none'
@@ -90,5 +103,51 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   if (previewOptions) {
     previewOptions.style.cssText = 'bottom: 1px'
+  }
+})
+
+// Convert conversation to image
+ipcRenderer.on('export', (event, isDarkMode) => {
+  try {
+    html2canvas(
+      document
+        .getElementsByTagName('cib-serp')[0]
+        .shadowRoot.getElementById('cib-conversation-main')
+        .shadowRoot.getElementById('cib-chat-main'),
+      {
+        backgroundColor: isDarkMode ? '#2b2b2b' : '#f3f3f3',
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        ignoreElements: (element) => {
+          if (
+            element.classList.contains('intro') ||
+            element.tagName === 'IFRAME'
+          ) {
+            return true
+          }
+        },
+        onclone: (doc) => {
+          bodyWidth = doc.body.clientWidth
+          paddingX = bodyWidth > 767 ? '32px' : '16px'
+          paddingY = bodyWidth > 767 ? '48px' : '36px'
+          doc.getElementById(
+            'cib-chat-main'
+          ).style.cssText = `padding: 0 ${paddingX} ${paddingY} ${paddingX}`
+        },
+      }
+    ).then(function (canvas) {
+      const dataURL = canvas.toDataURL('image/png')
+      ipcRenderer.send('export-data', dataURL)
+      // Rerender the draggable area
+      const titleBar = document.getElementById('titleBar')
+      if (titleBar) {
+        titleBar.style.top === '1px'
+          ? (titleBar.style.top = '0px')
+          : (titleBar.style.top = '1px')
+      }
+    })
+  } catch {
+    ipcRenderer.send('export-data', '')
   }
 })
