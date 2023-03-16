@@ -20,22 +20,22 @@
 
 ### Windows
 
-- [BingGPT-0.1.6-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-win32-x64-Setup.exe) (Installer)
-- [BingGPT-0.1.6-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-win32-x64.zip) (Portable)
-- [BingGPT-0.1.6-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-win32-arm64-Setup.exe) (Installer)
-- [BingGPT-0.1.6-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-win32-arm64.zip) (Portable)
+- [BingGPT-0.1.7-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-win32-x64-Setup.exe) (Installer)
+- [BingGPT-0.1.7-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-win32-x64.zip) (Portable)
+- [BingGPT-0.1.7-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-win32-arm64-Setup.exe) (Installer)
+- [BingGPT-0.1.7-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-win32-arm64.zip) (Portable)
 
 ### MacOS
 
-- [BingGPT-0.1.6-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-darwin-arm64.dmg) (Apple Silicon)
-- [BingGPT-0.1.6-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-darwin-x64.dmg) (Intel chips)
+- [BingGPT-0.1.7-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-darwin-arm64.dmg) (Apple Silicon)
+- [BingGPT-0.1.7-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-darwin-x64.dmg) (Intel chips)
 
 ### Linux
 
-- [BingGPT-0.1.6-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-linux-x64.deb)
-- [BingGPT-0.1.6-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-linux-arm64.deb)
-- [BingGPT-0.1.6-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-linux-x64.rpm)
-- [BingGPT-0.1.6-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.6/BingGPT-0.1.6-linux-arm64.rpm)
+- [BingGPT-0.1.7-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-linux-x64.deb)
+- [BingGPT-0.1.7-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-linux-arm64.deb)
+- [BingGPT-0.1.7-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-linux-x64.rpm)
+- [BingGPT-0.1.7-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.1.7/BingGPT-0.1.7-linux-arm64.rpm)
 
 ## Usage
 
@@ -43,7 +43,14 @@
 - Sign in to your Microsoft account
 - Start chatting
 
-**Note: VPN is needed when launching the app if new Bing is not available in your area. You can exit VPN while chatting.**
+**Note: VPN is required when launching the app if new Bing is not available in your area. Make sure `bing.com` and its subdomains are included in proxy rules. You can exit VPN while chatting.**
+
+## Features
+
+- Multi-platform
+- Chat with new Bing without installing Microsoft Edge or browser plugins
+- Export full conversation as image
+- Follow system theme
 
 ## Screenshot
 
