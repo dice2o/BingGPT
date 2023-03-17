@@ -1,7 +1,7 @@
 {
   "name": "binggpt",
   "productName": "BingGPT",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "AI-powered answer engine",
   "author": "dice2o",
   "license": "Apache-2.0",
@@ -19,7 +19,7 @@
     "@electron-forge/maker-rpm": "^6.0.5",
     "@electron-forge/maker-squirrel": "^6.0.5",
     "@electron-forge/maker-zip": "^6.0.5",
-    "electron": "^23.0.0"
+    "electron": "^23.1.4"
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",

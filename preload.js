@@ -109,34 +109,38 @@ window.addEventListener('DOMContentLoaded', () => {
 // Convert conversation to image
 ipcRenderer.on('export', (event, isDarkMode) => {
   try {
-    html2canvas(
-      document
-        .getElementsByTagName('cib-serp')[0]
-        .shadowRoot.getElementById('cib-conversation-main')
-        .shadowRoot.getElementById('cib-chat-main'),
-      {
-        backgroundColor: isDarkMode ? '#2b2b2b' : '#f3f3f3',
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        ignoreElements: (element) => {
-          if (
-            element.classList.contains('intro') ||
-            element.tagName === 'IFRAME'
-          ) {
-            return true
-          }
-        },
-        onclone: (doc) => {
-          bodyWidth = doc.body.clientWidth
-          paddingX = bodyWidth > 767 ? '32px' : '16px'
-          paddingY = bodyWidth > 767 ? '48px' : '36px'
-          doc.getElementById(
-            'cib-chat-main'
-          ).style.cssText = `padding: 0 ${paddingX} ${paddingY} ${paddingX}`
-        },
-      }
-    ).then(function (canvas) {
+    const chatMain = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-conversation-main')
+      .shadowRoot.getElementById('cib-chat-main')
+    html2canvas(chatMain, {
+      backgroundColor: isDarkMode ? '#2b2b2b' : '#f3f3f3',
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      ignoreElements: (element) => {
+        if (
+          element.classList.contains('intro') ||
+          element.tagName === 'IFRAME'
+        ) {
+          return true
+        }
+      },
+      onclone: (doc) => {
+        const bodyWidth = doc.body.clientWidth
+        const paddingX = bodyWidth > 767 ? '32px' : '16px'
+        const paddingBottom = bodyWidth > 767 ? '48px' : '36px'
+        const paddingTop =
+          chatMain.getElementsByTagName('cib-chat-turn')[0].offsetHeight === 0
+            ? '0'
+            : bodyWidth > 767
+            ? '24px'
+            : '18px'
+        doc.getElementById(
+          'cib-chat-main'
+        ).style.cssText = `padding: ${paddingTop} ${paddingX} ${paddingBottom} ${paddingX}`
+      },
+    }).then(function (canvas) {
       const dataURL = canvas.toDataURL('image/png')
       ipcRenderer.send('export-data', dataURL)
       // Rerender the draggable area

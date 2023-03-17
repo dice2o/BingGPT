@@ -34,11 +34,12 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
+          bin: 'BingGPT',
           name: 'binggpt',
           productName: 'BingGPT',
           description: 'AI-powered answer engine',
           productDescription: 'AI-powered answer engine',
-          version: '0.1.7',
+          version: '0.1.8',
           categories: ['Utility'],
           maintainer: 'dice2o',
           homepage: 'https://github.com/dice2o/BingGPT',
@@ -50,11 +51,12 @@ module.exports = {
       name: '@electron-forge/maker-rpm',
       config: {
         options: {
+          bin: 'BingGPT',
           name: 'binggpt',
           productName: 'BingGPT',
           description: 'AI-powered answer engine',
           productDescription: 'AI-powered answer engine',
-          version: '0.1.7',
+          version: '0.1.8',
           categories: ['Utility'],
           maintainer: 'dice2o',
           homepage: 'https://github.com/dice2o/BingGPT',
