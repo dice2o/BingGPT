@@ -76,8 +76,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const results = document.getElementById('b_results')
   if (results) {
     const chatWrapper = document.getElementsByClassName('uds_sydney_wrapper')[0]
+    const serp = document.getElementsByTagName('cib-serp')
     if (chatWrapper) {
       chatWrapper.style.cssText = 'margin-top: -76px'
+    }
+    if (serp) {
+      ipcRenderer.send('get-font-size')
     }
   }
   // Compose page
@@ -104,6 +108,42 @@ window.addEventListener('DOMContentLoaded', () => {
   if (previewOptions) {
     previewOptions.style.cssText = 'bottom: 1px'
   }
+})
+
+// Set font size
+ipcRenderer.on('set-font-size', (event, size) => {
+  try {
+    const serp = document.getElementsByTagName('cib-serp')
+    if (serp) {
+      const conversationMain = document
+        .getElementsByTagName('cib-serp')[0]
+        .shadowRoot.getElementById('cib-conversation-main')
+      conversationMain.style.setProperty(
+        '--cib-type-body1-font-size',
+        `${size}px`
+      )
+      conversationMain.style.setProperty(
+        '--cib-type-body1-strong-font-size',
+        `${size}px`
+      )
+      conversationMain.style.setProperty(
+        '--cib-type-body2-font-size',
+        `${size}px`
+      )
+      conversationMain.style.setProperty(
+        '--cib-type-body2-line-height',
+        `${size + 6}px`
+      )
+      serp[0].style.setProperty(
+        '--cib-type-body2-font-size',
+        `${size > 15 ? size : 16}px`
+      )
+      serp[0].style.setProperty(
+        '--cib-type-body2-line-height',
+        `${size > 15 ? size + 6 : 22}px`
+      )
+    }
+  } catch {}
 })
 
 // Convert conversation to image
@@ -152,6 +192,6 @@ ipcRenderer.on('export', (event, isDarkMode) => {
       }
     })
   } catch {
-    ipcRenderer.send('export-data', '')
+    ipcRenderer.send('error', 'Unable to export conversation')
   }
 })

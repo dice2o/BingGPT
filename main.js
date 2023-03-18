@@ -8,14 +8,37 @@ const {
   BrowserWindow,
 } = require('electron')
 const contextMenu = require('electron-context-menu')
+const Store = require('electron-store')
 const path = require('path')
 const fs = require('fs')
 
 if (require('electron-squirrel-startup')) app.quit()
 
+const configSchema = {
+  theme: {
+    enum: ['system', 'light', 'dark'],
+    default: 'system',
+  },
+  fontSize: {
+    enum: [14, 16, 18, 20],
+    default: 14,
+  },
+  alwaysOnTop: {
+    type: 'boolean',
+    default: false,
+  },
+}
+const config = new Store({ schema: configSchema, clearInvalidConfig: true })
+
 const createWindow = () => {
-  // Check color scheme
-  const isDarkMode = nativeTheme.shouldUseDarkColors
+  // Get theme settings
+  const theme = config.get('theme')
+  const isDarkMode =
+    theme === 'system'
+      ? nativeTheme.shouldUseDarkColors
+      : theme === 'dark'
+      ? true
+      : false
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
@@ -35,6 +58,11 @@ const createWindow = () => {
       nodeIntegration: true,
     },
   })
+  // Get always on top settings
+  const alwaysOnTop = config.get('alwaysOnTop')
+  mainWindow.setAlwaysOnTop(alwaysOnTop)
+  // Get language
+  const locale = app.getLocale() || 'en-US'
   // Hide main menu (Windows)
   Menu.setApplicationMenu(null)
   // Create context menu
@@ -66,7 +94,86 @@ const createWindow = () => {
         type: 'checkbox',
         checked: mainWindow.isAlwaysOnTop() ? true : false,
         visible: parameters.selectionText.trim().length === 0,
-        click: () => mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop()),
+        click: () => {
+          config.set('alwaysOnTop', !mainWindow.isAlwaysOnTop())
+          mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop())
+        },
+      },
+      {
+        type: 'separator',
+        visible: parameters.selectionText.trim().length === 0,
+      },
+      {
+        label: 'Appearance',
+        visible: parameters.selectionText.trim().length === 0,
+        submenu: [
+          {
+            label: 'Theme',
+            submenu: [
+              {
+                label: 'System',
+                type: 'radio',
+                checked: config.get('theme') === 'system',
+                click() {
+                  themeHandler('system')
+                },
+              },
+              {
+                label: 'Light',
+                type: 'radio',
+                checked: config.get('theme') === 'light',
+                click() {
+                  themeHandler('light')
+                },
+              },
+              {
+                label: 'Dark',
+                type: 'radio',
+                checked: config.get('theme') === 'dark',
+                click() {
+                  themeHandler('dark')
+                },
+              },
+            ],
+          },
+          {
+            label: 'Font Size',
+            submenu: [
+              {
+                label: 'Default',
+                type: 'radio',
+                checked: config.get('fontSize') === 14,
+                click() {
+                  fontSizeHandler(14)
+                },
+              },
+              {
+                label: 'Medium',
+                type: 'radio',
+                checked: config.get('fontSize') === 16,
+                click() {
+                  fontSizeHandler(16)
+                },
+              },
+              {
+                label: 'Large',
+                type: 'radio',
+                checked: config.get('fontSize') === 18,
+                click() {
+                  fontSizeHandler(18)
+                },
+              },
+              {
+                label: 'Extra Large',
+                type: 'radio',
+                checked: config.get('fontSize') === 20,
+                click() {
+                  fontSizeHandler(20)
+                },
+              },
+            ],
+          },
+        ],
       },
       {
         type: 'separator',
@@ -98,7 +205,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.1.8',
+        label: 'BingGPT v0.2.0',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -106,8 +213,6 @@ const createWindow = () => {
       },
     ],
   })
-  // Get language
-  const locale = app.getLocale() || 'en-US'
   // Load Bing
   const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
     isDarkMode ? 'dark' : 'light'
@@ -151,6 +256,28 @@ const createWindow = () => {
       }
     }
   )
+  // Theme
+  const themeHandler = (newTheme) => {
+    config.set('theme', newTheme)
+    dialog
+      .showMessageBox(mainWindow, {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        message: 'Theme Saved',
+        detail: 'Do you want to reload BingGPT now?',
+      })
+      .then((result) => {
+        if (result.response === 0) {
+          mainWindow.close()
+          createWindow()
+        }
+      })
+  }
+  // Font size
+  const fontSizeHandler = (newSize) => {
+    config.set('fontSize', newSize)
+    mainWindow.webContents.send('set-font-size', newSize)
+  }
 }
 
 app.whenReady().then(() => {
@@ -178,13 +305,27 @@ app.whenReady().then(() => {
             })
           }
         })
-    } else {
-      dialog.showMessageBox({
-        type: 'info',
-        message: 'Error',
-        detail: 'Unable to export conversation',
-      })
     }
+  })
+  // Get font size settings
+  ipcMain.on('get-font-size', () => {
+    const fontSize = config.get('fontSize')
+    if (fontSize !== 14) {
+      setTimeout(() => {
+        BrowserWindow.getAllWindows()[0].webContents.send(
+          'set-font-size',
+          fontSize
+        )
+      }, 1000)
+    }
+  })
+  // Error message
+  ipcMain.on('error', (event, detail) => {
+    dialog.showMessageBox({
+      type: 'info',
+      message: 'Error',
+      detail: detail,
+    })
   })
   createWindow()
   app.on('activate', () => {
