@@ -29,15 +29,15 @@ window.addEventListener('DOMContentLoaded', () => {
     const discoverContent = document.getElementById('uns_section_fixedbottom')
     if (signInLink) {
       signInLink.setAttribute('target', '_self')
-      if (joinLink) {
-        joinLink.setAttribute('target', '_self')
-      }
+    }
+    if (joinLink) {
+      joinLink.setAttribute('target', '_self')
     }
     if (previewBanner) {
       previewBanner.style.cssText = 'margin-top: 44px'
-      if (previewCloseBtn) {
-        previewCloseBtn.style.cssText = 'display: none'
-      }
+    }
+    if (previewCloseBtn) {
+      previewCloseBtn.style.cssText = 'display: none'
     }
     if (forYouContent) {
       forYouContent.style.cssText = 'display: none'
