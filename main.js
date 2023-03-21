@@ -81,9 +81,26 @@ const createWindow = () => {
       {
         label: 'Export',
         visible: parameters.selectionText.trim().length === 0,
-        click: () => {
-          mainWindow.webContents.send('export', isDarkMode)
-        },
+        submenu: [
+          {
+            label: 'Markdown',
+            click() {
+              mainWindow.webContents.send('export', 'md', isDarkMode)
+            },
+          },
+          {
+            label: 'PNG',
+            click() {
+              mainWindow.webContents.send('export', 'png', isDarkMode)
+            },
+          },
+          {
+            label: 'PDF',
+            click() {
+              mainWindow.webContents.send('export', 'pdf', isDarkMode)
+            },
+          },
+        ],
       },
       {
         type: 'separator',
@@ -205,7 +222,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.2.1',
+        label: 'BingGPT v0.3.0',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -281,19 +298,31 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
-  // Export conversation as image
-  ipcMain.on('export-data', (event, dataURL) => {
-    if (dataURL) {
+  // Save to file
+  ipcMain.on('export-data', (event, format, dataURL) => {
+    if (format) {
+      const fileName = `BingGPT-${Math.floor(Date.now() / 1000)}.${format}`
+      let filters
+      switch (format) {
+        case 'md':
+          filters = [{ name: 'Markdown', extensions: ['md'] }]
+          break
+        case 'png':
+          filters = [{ name: 'Image', extensions: ['png'] }]
+          break
+        case 'pdf':
+          filters = [{ name: 'PDF', extensions: ['pdf'] }]
+      }
       dialog
         .showSaveDialog(BrowserWindow.getAllWindows()[0], {
           title: 'Export',
-          defaultPath: `BingGPT-${Math.floor(Date.now() / 1000)}.png`,
-          filters: [{ name: 'Images', extensions: ['png'] }],
+          defaultPath: fileName,
+          filters: filters,
         })
         .then((result) => {
           if (!result.canceled) {
             const filePath = result.filePath
-            const data = dataURL.replace(/^data:image\/\w+;base64,/, '')
+            const data = dataURL.replace(/^data:\S+;base64,/, '')
             fs.writeFile(filePath, data, 'base64', (err) => {
               if (err) {
                 dialog.showMessageBox({

@@ -1,5 +1,7 @@
 const { ipcRenderer } = require('electron')
 const html2canvas = require('html2canvas')
+const { jsPDF } = require('jspdf')
+const TurndownService = require('turndown')
 
 window.addEventListener('DOMContentLoaded', () => {
   // Change page title
@@ -13,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
     titleBar.id = 'titleBar'
     titleBar.style.cssText =
       'position: fixed; top: 0px; height: 32px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag; z-index: 50'
-    body.insertBefore(titleBar, body.firstChild)
+    body.prepend(titleBar)
   }
   // Content
   const content = document.getElementById('b_content')
@@ -118,36 +120,20 @@ ipcRenderer.on('set-font-size', (event, size) => {
       const conversationMain = document
         .getElementsByTagName('cib-serp')[0]
         .shadowRoot.getElementById('cib-conversation-main')
-      conversationMain.style.setProperty(
-        '--cib-type-body1-font-size',
-        `${size}px`
-      )
-      conversationMain.style.setProperty(
-        '--cib-type-body1-strong-font-size',
-        `${size}px`
-      )
-      conversationMain.style.setProperty(
-        '--cib-type-body2-font-size',
-        `${size}px`
-      )
-      conversationMain.style.setProperty(
-        '--cib-type-body2-line-height',
-        `${size + 6}px`
-      )
-      serp[0].style.setProperty(
-        '--cib-type-body2-font-size',
-        `${size > 15 ? size : 16}px`
-      )
-      serp[0].style.setProperty(
-        '--cib-type-body2-line-height',
-        `${size > 15 ? size + 6 : 22}px`
-      )
+      conversationMain.style.cssText += `--cib-type-body1-font-size: ${size}px; --cib-type-body1-strong-font-size: ${size}px; --cib-type-body2-font-size: ${size}px; --cib-type-body2-line-height: ${
+        size + 6
+      }px`
+      serp[0].style.cssText += `--cib-type-body2-font-size: ${
+        size > 15 ? size + 2 : 16
+      }px; --cib-type-body2-line-height: ${size > 15 ? size + 8 : 22}px`
     }
-  } catch {}
+  } catch (err) {
+    console.log(err)
+  }
 })
 
-// Convert conversation to image
-ipcRenderer.on('export', (event, isDarkMode) => {
+// Convert from conversation
+ipcRenderer.on('export', (event, format, isDarkMode) => {
   try {
     const chatMain = document
       .getElementsByTagName('cib-serp')[0]
@@ -161,7 +147,16 @@ ipcRenderer.on('export', (event, isDarkMode) => {
       ignoreElements: (element) => {
         if (
           element.classList.contains('intro') ||
-          element.tagName === 'IFRAME'
+          element.getAttribute('type') === 'host'
+        ) {
+          return true
+        }
+        if (
+          format === 'md' &&
+          (element.classList.contains('label') ||
+            element.classList.contains('hidden') ||
+            element.classList.contains('expand-button') ||
+            element.getAttribute('type') === 'meta')
         ) {
           return true
         }
@@ -179,10 +174,20 @@ ipcRenderer.on('export', (event, isDarkMode) => {
         doc.getElementById(
           'cib-chat-main'
         ).style.cssText = `padding: ${paddingTop} ${paddingX} ${paddingBottom} ${paddingX}`
+        // Markdown
+        if (format === 'md') {
+          markdownHandler(doc.getElementById('cib-chat-main'))
+        }
       },
-    }).then(function (canvas) {
-      const dataURL = canvas.toDataURL('image/png')
-      ipcRenderer.send('export-data', dataURL)
+    }).then((canvas) => {
+      const pngDataURL = canvas.toDataURL('image/png')
+      if (format === 'png') {
+        // PNG
+        ipcRenderer.send('export-data', 'png', pngDataURL)
+      } else if (format === 'pdf') {
+        // PDF
+        pdfHandler(canvas, pngDataURL)
+      }
       // Rerender the draggable area
       const titleBar = document.getElementById('titleBar')
       if (titleBar) {
@@ -191,7 +196,63 @@ ipcRenderer.on('export', (event, isDarkMode) => {
           : (titleBar.style.top = '1px')
       }
     })
-  } catch {
+  } catch (err) {
+    console.log(err)
     ipcRenderer.send('error', 'Unable to export conversation')
   }
 })
+
+const pdfHandler = (canvas, pngDataURL) => {
+  const pdfWidth = canvas.width / window.devicePixelRatio
+  const pdfHeight = canvas.height / window.devicePixelRatio
+  const pdf = new jsPDF(pdfWidth > pdfHeight ? 'landscape' : 'portrait', 'pt', [
+    pdfWidth,
+    pdfHeight,
+  ])
+  pdf.addImage(pngDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight, '', 'FAST')
+  const pdfDataURL = pdf.output('dataurlstring')
+  ipcRenderer.send('export-data', 'pdf', pdfDataURL)
+}
+
+const markdownHandler = (element) => {
+  const turndownService = new TurndownService({
+    codeBlockStyle: 'fenced',
+  })
+  turndownService.addRule('numberLink', {
+    filter: 'sup',
+    replacement: (content) => {
+      return `<sup>[${content}]</sup>`
+    },
+  })
+  turndownService.addRule('textLink', {
+    filter: (node) => {
+      return node.classList.contains('tooltip-target')
+    },
+    replacement: (content) => {
+      return content
+    },
+  })
+  turndownService.addRule('footerLink', {
+    filter: (node) => {
+      return node.classList.contains('attribution-item')
+    },
+    replacement: (content, node) => {
+      return `[${content.replace(/^(\d+)(\\.)/, '[$1]')}](${node.getAttribute(
+        'href'
+      )} "${node.getAttribute('title')}")`
+    },
+  })
+  turndownService.addRule('userMessage', {
+    filter: (node) => {
+      return node.classList.contains('text-message-content')
+    },
+    replacement: (content) => {
+      return `> **${content}**`
+    },
+  })
+  const mdDataURL = Buffer.from(
+    turndownService.turndown(element),
+    'utf-8'
+  ).toString('base64')
+  ipcRenderer.send('export-data', 'md', mdDataURL)
+}
