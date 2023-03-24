@@ -1,7 +1,7 @@
 <p align="center">
   <img width="180" src="./icon.png" alt="BingGPT">
   <h1 align="center">BingGPT</h1>
-  <p align="center">Desktop application of new Bing's AI-powered chat </p>
+  <p align="center">Desktop application of new Bing's AI-powered chat</p>
 </p>
 
 <p align="center">
@@ -17,22 +17,22 @@
 
 ### Windows
 
-- [BingGPT-0.3.0-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-win32-x64-Setup.exe) (Installer)
-- [BingGPT-0.3.0-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-win32-x64.zip) (Portable)
-- [BingGPT-0.3.0-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-win32-arm64-Setup.exe) (Installer)
-- [BingGPT-0.3.0-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-win32-arm64.zip) (Portable)
+- [BingGPT-0.3.1-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-win32-x64-Setup.exe) (Installer)
+- [BingGPT-0.3.1-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-win32-x64.zip) (Portable)
+- [BingGPT-0.3.1-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-win32-arm64-Setup.exe) (Installer)
+- [BingGPT-0.3.1-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-win32-arm64.zip) (Portable)
 
 ### macOS
 
-- [BingGPT-0.3.0-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-darwin-arm64.dmg) (Apple Silicon)
-- [BingGPT-0.3.0-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-darwin-x64.dmg) (Intel chips)
+- [BingGPT-0.3.1-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-darwin-arm64.dmg) (Apple Silicon)
+- [BingGPT-0.3.1-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-darwin-x64.dmg) (Intel chips)
 
 ### Linux
 
-- [BingGPT-0.3.0-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-linux-x64.deb)
-- [BingGPT-0.3.0-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-linux-arm64.deb)
-- [BingGPT-0.3.0-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-linux-x64.rpm)
-- [BingGPT-0.3.0-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.0/BingGPT-0.3.0-linux-arm64.rpm)
+- [BingGPT-0.3.1-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-linux-x64.deb)
+- [BingGPT-0.3.1-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-linux-arm64.deb)
+- [BingGPT-0.3.1-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-linux-x64.rpm)
+- [BingGPT-0.3.1-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.1/BingGPT-0.3.1-linux-arm64.rpm)
 
 ## Usage
 
@@ -40,7 +40,7 @@
 - Sign in to your Microsoft account
 - Start chatting
 
-**Note: VPN is required when launching the app if new Bing is not available in your area. Make sure `bing.com` and its subdomains are included in proxy rules. You can exit VPN while chatting.**
+**Note: VPN is required when launching the app if new Bing is not available in your area. Make sure `bing.com` and its subdomains are included in proxy rules.**
 
 ## Features
 
