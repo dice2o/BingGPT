@@ -222,7 +222,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.0',
+        label: 'BingGPT v0.3.1',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -235,10 +235,8 @@ const createWindow = () => {
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1660.12'
-  mainWindow.loadURL(bingUrl, {
-    userAgent: userAgent,
-  })
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0'
+  mainWindow.loadURL(bingUrl)
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
@@ -250,9 +248,7 @@ const createWindow = () => {
       url.indexOf('https://edgeservices.bing.com/edgesvc/urlredirect') !== -1
     ) {
       event.preventDefault()
-      mainWindow.loadURL(bingUrl, {
-        userAgent: userAgent,
-      })
+      mainWindow.loadURL(bingUrl)
     }
   })
   // Modify Content Security Policy
@@ -271,6 +267,14 @@ const createWindow = () => {
       } else {
         return callback({ cancel: false })
       }
+    }
+  )
+  // Modify headers
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+    (details, callback) => {
+      details.requestHeaders['user-agent'] = userAgent
+      details.requestHeaders['x-forwarded-for'] = '1.1.1.1'
+      callback({ requestHeaders: details.requestHeaders, cancel: false })
     }
   )
   // Theme
