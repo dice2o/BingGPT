@@ -65,6 +65,11 @@ const createWindow = () => {
   const locale = app.getLocale() || 'en-US'
   // Hide main menu (Windows)
   Menu.setApplicationMenu(null)
+  // Set proxy
+  const proxy = process.env.http_proxy || process.env.HTTP_PROXY
+  if (proxy) {
+    mainWindow.webContents.session.setProxy({ proxyRules: proxy })
+  }
   // Create context menu
   contextMenu({
     window: mainWindow.webContents,
