@@ -1,19 +1,11 @@
-const {
-  app,
-  shell,
-  nativeTheme,
-  dialog,
-  ipcMain,
-  Menu,
-  BrowserWindow,
-} = require('electron')
-const contextMenu = require('electron-context-menu')
-const prompt = require('electron-prompt')
-const Store = require('electron-store')
-const path = require('path')
-const fs = require('fs')
+const { app, shell, nativeTheme, dialog, ipcMain, Menu, BrowserWindow } = require('electron');
+const contextMenu = require('electron-context-menu');
+const prompt = require('electron-prompt');
+const Store = require('electron-store');
+const path = require('path');
+const fs = require('fs');
 
-if (require('electron-squirrel-startup')) app.quit()
+if (require('electron-squirrel-startup')) app.quit();
 
 const configSchema = {
   theme: {
@@ -32,18 +24,14 @@ const configSchema = {
     type: 'string',
     default: '',
   },
-}
-const config = new Store({ schema: configSchema, clearInvalidConfig: true })
+};
+const config = new Store({ schema: configSchema, clearInvalidConfig: true });
 
 const createWindow = () => {
   // Get theme settings
-  const theme = config.get('theme')
+  const theme = config.get('theme');
   const isDarkMode =
-    theme === 'system'
-      ? nativeTheme.shouldUseDarkColors
-      : theme === 'dark'
-        ? true
-        : false
+    theme === 'system' ? nativeTheme.shouldUseDarkColors : theme === 'dark' ? true : false;
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
@@ -62,18 +50,21 @@ const createWindow = () => {
       devTools: false,
       nodeIntegration: true,
     },
-  })
+  });
   // Get always on top settings
-  const alwaysOnTop = config.get('alwaysOnTop')
-  mainWindow.setAlwaysOnTop(alwaysOnTop)
+  const alwaysOnTop = config.get('alwaysOnTop');
+  mainWindow.setAlwaysOnTop(alwaysOnTop);
   // Get language
-  const locale = app.getLocale() || 'en-US'
+  const locale = app.getLocale() || 'en-US';
   // Hide main menu (Windows)
-  Menu.setApplicationMenu(null)
+  Menu.setApplicationMenu(null);
   // Set proxy
-  const proxy = config.get('proxy')
+  const proxy = config.get('proxy');
+
   if (proxy) {
-    mainWindow.webContents.session.setProxy({ proxyRules: proxy })
+    console.log(proxy);
+    mainWindow.webContents.session.setProxy({ proxyRules: proxy });
+    // app.commandLine.appendSwitch('proxy-server', proxy);
   }
   // Create context menu
   contextMenu({
@@ -85,7 +76,7 @@ const createWindow = () => {
         label: 'Reload',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          mainWindow.reload()
+          mainWindow.reload();
         },
       },
       {
@@ -95,19 +86,19 @@ const createWindow = () => {
           {
             label: 'Markdown',
             click() {
-              mainWindow.webContents.send('export', 'md', isDarkMode)
+              mainWindow.webContents.send('export', 'md', isDarkMode);
             },
           },
           {
             label: 'PNG',
             click() {
-              mainWindow.webContents.send('export', 'png', isDarkMode)
+              mainWindow.webContents.send('export', 'png', isDarkMode);
             },
           },
           {
             label: 'PDF',
             click() {
-              mainWindow.webContents.send('export', 'pdf', isDarkMode)
+              mainWindow.webContents.send('export', 'pdf', isDarkMode);
             },
           },
         ],
@@ -122,8 +113,8 @@ const createWindow = () => {
         checked: mainWindow.isAlwaysOnTop() ? true : false,
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          config.set('alwaysOnTop', !mainWindow.isAlwaysOnTop())
-          mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop())
+          config.set('alwaysOnTop', !mainWindow.isAlwaysOnTop());
+          mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop());
         },
       },
       {
@@ -142,7 +133,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('theme') === 'system',
                 click() {
-                  themeHandler('system')
+                  themeHandler('system');
                 },
               },
               {
@@ -150,7 +141,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('theme') === 'light',
                 click() {
-                  themeHandler('light')
+                  themeHandler('light');
                 },
               },
               {
@@ -158,7 +149,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('theme') === 'dark',
                 click() {
-                  themeHandler('dark')
+                  themeHandler('dark');
                 },
               },
             ],
@@ -171,7 +162,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('fontSize') === 14,
                 click() {
-                  fontSizeHandler(14)
+                  fontSizeHandler(14);
                 },
               },
               {
@@ -179,7 +170,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('fontSize') === 16,
                 click() {
-                  fontSizeHandler(16)
+                  fontSizeHandler(16);
                 },
               },
               {
@@ -187,7 +178,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('fontSize') === 18,
                 click() {
-                  fontSizeHandler(18)
+                  fontSizeHandler(18);
                 },
               },
               {
@@ -195,7 +186,7 @@ const createWindow = () => {
                 type: 'radio',
                 checked: config.get('fontSize') === 20,
                 click() {
-                  fontSizeHandler(20)
+                  fontSizeHandler(20);
                 },
               },
             ],
@@ -210,14 +201,15 @@ const createWindow = () => {
         label: 'Reset',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          const session = mainWindow.webContents.session
+          const session = mainWindow.webContents.session;
+          config.set('proxy', '');
           session
             .clearStorageData({
-              storages: ['localstorage', 'cookies'],
+              storages: [],
             })
             .then(() => {
-              mainWindow.reload()
-            })
+              mainWindow.reload();
+            });
         },
       },
       {
@@ -228,89 +220,85 @@ const createWindow = () => {
         label: 'Proxy',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          prompt({
-            title: 'Proxy',
-            label: 'Proxy:',
-            value: proxy,
-            
-            inputAttrs: {
-              type: 'url',
+          prompt(
+            {
+              title: 'Proxy',
+              label: 'Proxy:',
+              value: proxy,
+
+              inputAttrs: {
+                type: 'url',
+              },
+              type: 'input',
             },
-            type: 'input',
-          }, mainWindow)
-            .then((r) => {
-              if (r) {
-                proxyHandler(r)
-              }
-            })
+            mainWindow,
+          ).then(r => {
+            if (r) {
+              proxyHandler(r);
+            }
+          });
         },
       },
       {
         label: 'Feedback',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          shell.openExternal('https://github.com/dice2o/BingGPT/issues')
+          shell.openExternal('https://github.com/dice2o/BingGPT/issues');
         },
       },
       {
         label: 'BingGPT v0.3.1',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          shell.openExternal('https://github.com/dice2o/BingGPT/releases')
+          shell.openExternal('https://github.com/dice2o/BingGPT/releases');
         },
       },
     ],
-  })
+  });
   // Load Bing
   const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
     isDarkMode ? 'dark' : 'light'
-  }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
+  }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
   const userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0'
-  mainWindow.loadURL(bingUrl)
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0';
+  mainWindow.loadURL(bingUrl);
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url)
-    return { action: 'deny' }
-  })
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
   // Check if user is logged in successfully
   mainWindow.webContents.on('will-redirect', (event, url) => {
-    if (
-      url.indexOf('https://edgeservices.bing.com/edgesvc/urlredirect') !== -1
-    ) {
-      event.preventDefault()
-      mainWindow.loadURL(bingUrl)
+    if (url.indexOf('https://edgeservices.bing.com/edgesvc/urlredirect') !== -1) {
+      event.preventDefault();
+      mainWindow.loadURL(bingUrl);
     }
-  })
+  });
   // Modify Content Security Policy
-  mainWindow.webContents.session.webRequest.onHeadersReceived(
-    (details, callback) => {
-      let responseHeaders = details.responseHeaders
-      const CSP = responseHeaders['content-security-policy']
-      if (details.url === bingUrl && CSP) {
-        responseHeaders['content-security-policy'] = CSP[0]
-          .replace(`require-trusted-types-for 'script'`, '')
-          .replace('report-to csp-endpoint', '')
-        callback({
-          cancel: false,
-          responseHeaders,
-        })
-      } else {
-        return callback({ cancel: false })
-      }
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    let responseHeaders = details.responseHeaders;
+    const CSP = responseHeaders['content-security-policy'];
+    if (details.url === bingUrl && CSP) {
+      responseHeaders['content-security-policy'] = CSP[0]
+        .replace(`require-trusted-types-for 'script'`, '')
+        .replace('report-to csp-endpoint', '');
+      callback({
+        cancel: false,
+        responseHeaders,
+      });
+    } else {
+      return callback({ cancel: false });
     }
-  )
+  });
   // Modify headers
-  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
-    (details, callback) => {
-      details.requestHeaders['user-agent'] = userAgent
-      details.requestHeaders['x-forwarded-for'] = '1.1.1.1'
-      callback({ requestHeaders: details.requestHeaders, cancel: false })
-    }
-  )
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['user-agent'] = userAgent;
+    details.requestHeaders['x-forwarded-for'] = '1.1.1.1';
+    callback({ requestHeaders: details.requestHeaders, cancel: false });
+  });
   // Theme
-  const themeHandler = (newTheme) => {
-    config.set('theme', newTheme)
+  const themeHandler = newTheme => {
+    config.set('theme', newTheme);
     dialog
       .showMessageBox(mainWindow, {
         type: 'question',
@@ -318,16 +306,16 @@ const createWindow = () => {
         message: 'Theme Saved',
         detail: 'Do you want to reload BingGPT now?',
       })
-      .then((result) => {
+      .then(result => {
         if (result.response === 0) {
-          mainWindow.close()
-          createWindow()
+          mainWindow.close();
+          createWindow();
         }
-      })
-  }
+      });
+  };
   // Proxy
-  const proxyHandler = (newProxy) => {
-    config.set('proxy', newProxy)
+  const proxyHandler = newProxy => {
+    config.set('proxy', newProxy);
     dialog
       .showMessageBox(mainWindow, {
         type: 'question',
@@ -335,35 +323,35 @@ const createWindow = () => {
         message: 'Proxy Saved',
         detail: 'Do you want to reload BingGPT now?',
       })
-      .then((result) => {
+      .then(result => {
         if (result.response === 0) {
-          mainWindow.close()
-          createWindow()
+          mainWindow.close();
+          createWindow();
         }
-      })
-  }
+      });
+  };
   // Font size
-  const fontSizeHandler = (newSize) => {
-    config.set('fontSize', newSize)
-    mainWindow.webContents.send('set-font-size', newSize)
-  }
-}
+  const fontSizeHandler = newSize => {
+    config.set('fontSize', newSize);
+    mainWindow.webContents.send('set-font-size', newSize);
+  };
+};
 
 app.whenReady().then(() => {
   // Save to file
   ipcMain.on('export-data', (event, format, dataURL) => {
     if (format) {
-      const fileName = `BingGPT-${Math.floor(Date.now() / 1000)}.${format}`
-      let filters
+      const fileName = `BingGPT-${Math.floor(Date.now() / 1000)}.${format}`;
+      let filters;
       switch (format) {
         case 'md':
-          filters = [{ name: 'Markdown', extensions: ['md'] }]
-          break
+          filters = [{ name: 'Markdown', extensions: ['md'] }];
+          break;
         case 'png':
-          filters = [{ name: 'Image', extensions: ['png'] }]
-          break
+          filters = [{ name: 'Image', extensions: ['png'] }];
+          break;
         case 'pdf':
-          filters = [{ name: 'PDF', extensions: ['pdf'] }]
+          filters = [{ name: 'PDF', extensions: ['pdf'] }];
       }
       dialog
         .showSaveDialog(BrowserWindow.getAllWindows()[0], {
@@ -371,49 +359,46 @@ app.whenReady().then(() => {
           defaultPath: fileName,
           filters: filters,
         })
-        .then((result) => {
+        .then(result => {
           if (!result.canceled) {
-            const filePath = result.filePath
-            const data = dataURL.replace(/^data:\S+;base64,/, '')
-            fs.writeFile(filePath, data, 'base64', (err) => {
+            const filePath = result.filePath;
+            const data = dataURL.replace(/^data:\S+;base64,/, '');
+            fs.writeFile(filePath, data, 'base64', err => {
               if (err) {
                 dialog.showMessageBox({
                   type: 'info',
                   message: 'Error',
                   detail: err,
-                })
+                });
               }
-            })
+            });
           }
-        })
+        });
     }
-  })
+  });
   // Get font size settings
   ipcMain.on('get-font-size', () => {
-    const fontSize = config.get('fontSize')
+    const fontSize = config.get('fontSize');
     if (fontSize !== 14) {
       setTimeout(() => {
-        BrowserWindow.getAllWindows()[0].webContents.send(
-          'set-font-size',
-          fontSize
-        )
-      }, 1000)
+        BrowserWindow.getAllWindows()[0].webContents.send('set-font-size', fontSize);
+      }, 1000);
     }
-  })
+  });
   // Error message
   ipcMain.on('error', (event, detail) => {
     dialog.showMessageBox({
       type: 'info',
       message: 'Error',
       detail: detail,
-    })
-  })
-  createWindow()
+    });
+  });
+  createWindow();
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+  if (process.platform !== 'darwin') app.quit();
+});
