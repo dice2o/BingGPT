@@ -47,18 +47,21 @@
 - Chat with new Bing without installing Microsoft Edge or browser plugins
 - Export full conversation to Markdown, PNG or PDF
 - Customize appearance (theme & font size)
+- Keyboard shortcuts
 - Multi-platform
 
 ## Shortcuts
 
-- New topic: <kbd>Ctrl/Cmd</kbd> + <kbd>N</kbd>
-- Switch tone: <kbd>Ctrl/Cmd</kbd> + <kbd></></kbd>
-- Quick reply: <kbd>Ctrl/Cmd</kbd> + <kbd>Number</kbd>
-- Focus on textarea: <kbd>Ctrl/Cmd</kbd> + <kbd>I</kbd>
-- Stop responding: <kbd>Ctrl/Cmd</kbd> + <kbd>S</kbd>
-- Always on top: <kbd>Ctrl/Cmd</kbd> + <kbd>T</kbd>
-- Reload: <kbd>Ctrl/Cmd</kbd> + <kbd>R</kbd>
-- Set font size: <kbd>Ctrl/Cmd</kbd> + <kbd>+/-</kbd>
+| Action            | Shortcut                                        |
+| ----------------- | ----------------------------------------------- |
+| New topic         | <kbd>Ctrl/Cmd</kbd> + <kbd>N</kbd>              |
+| Switch tone       | <kbd>Ctrl/Cmd</kbd> + <kbd><</kbd> <kbd>></kbd> |
+| Quick reply       | <kbd>Ctrl/Cmd</kbd> + <kbd>Number</kbd>         |
+| Focus on textarea | <kbd>Ctrl/Cmd</kbd> + <kbd>I</kbd>              |
+| Stop responding   | <kbd>Ctrl/Cmd</kbd> + <kbd>S</kbd>              |
+| Always on top     | <kbd>Ctrl/Cmd</kbd> + <kbd>T</kbd>              |
+| Reload            | <kbd>Ctrl/Cmd</kbd> + <kbd>R</kbd>              |
+| Set font size     | <kbd>Ctrl/Cmd</kbd> + <kbd>+</kbd> <kbd>-</kbd> |
 
 <kbd>Ctrl</kbd> - Windows and Linux
 
