@@ -112,6 +112,102 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
+// New topic
+ipcRenderer.on('new-topic', () => {
+  try {
+    const newTopicBtn = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-action-bar-main')
+      .shadowRoot.querySelector('button[class="button-compose"]')
+    if (newTopicBtn) {
+      newTopicBtn.click()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Focus on textarea
+ipcRenderer.on('focus-on-textarea', () => {
+  try {
+    const textarea = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-action-bar-main')
+      .shadowRoot.getElementById('searchbox')
+    if (textarea) {
+      textarea.focus()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Stop responding
+ipcRenderer.on('stop-responding', () => {
+  try {
+    const stopBtn = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-action-bar-main')
+      .shadowRoot.querySelector('cib-typing-indicator')
+      .shadowRoot.getElementById('stop-responding-button')
+    if (stopBtn) {
+      stopBtn.click()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Quick reply
+ipcRenderer.on('quick-reply', (event, id) => {
+  try {
+    const suggestionReplies = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-conversation-main')
+      .shadowRoot.querySelector('cib-suggestion-bar')
+      .shadowRoot.querySelectorAll('cib-suggestion-item')
+    if (suggestionReplies) {
+      suggestionReplies[id - 1].shadowRoot.querySelector('button').click()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Switch tone
+ipcRenderer.on('switch-tone', (event, direction) => {
+  try {
+    const toneOptions = document
+      .getElementsByTagName('cib-serp')[0]
+      .shadowRoot.getElementById('cib-conversation-main')
+      .shadowRoot.querySelector('cib-tone-selector')
+      .shadowRoot.getElementById('tone-options')
+    if (toneOptions) {
+      const toneBtns = toneOptions.querySelectorAll('button')
+      const selectedBtn = toneOptions.querySelector('button[selected]')
+      let index = Array.from(toneBtns).indexOf(selectedBtn)
+      switch (direction) {
+        case 'right':
+          if (index === toneBtns.length - 1) {
+            index = 0
+          } else {
+            index++
+          }
+          break
+        case 'left':
+          if (index === 0) {
+            index = toneBtns.length - 1
+          } else {
+            index--
+          }
+      }
+      toneBtns[index].click()
+    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 // Set font size
 ipcRenderer.on('set-font-size', (event, size) => {
   try {
@@ -239,7 +335,7 @@ const markdownHandler = (element) => {
     replacement: (content, node) => {
       return `[${content.replace(/^(\d+)(\\.)/, '[$1]')}](${node.getAttribute(
         'href'
-      )} "${node.getAttribute('title')}")`
+      )} "${node.getAttribute('title').replace(/\"/g, '')}")`
     },
   })
   turndownService.addRule('userMessage', {
