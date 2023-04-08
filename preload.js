@@ -65,14 +65,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if (insightsTab) {
       insightsTab.style.cssText = 'display: none'
     }
-    // Error
-    if (!previewBanner && !tabs) {
-      const errorInfo = document.createElement('p')
-      errorInfo.textContent = 'Not Available'
-      errorInfo.style.cssText =
-        'padding: 64px 32px; text-align: center; font-size: 20px; font-weight: 600; line-height: 26px;'
-      content.insertBefore(errorInfo, content.firstChild)
-    }
   }
   // Chat area of main page
   const results = document.getElementById('b_results')

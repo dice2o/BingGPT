@@ -219,7 +219,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.2',
+        label: 'BingGPT v0.3.3',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -239,13 +239,20 @@ const createWindow = () => {
     shell.openExternal(url)
     return { action: 'deny' }
   })
-  // Check if user is logged in successfully
+  // Login
   mainWindow.webContents.on('will-redirect', (event, url) => {
     if (
       url.indexOf('https://edgeservices.bing.com/edgesvc/urlredirect') !== -1
     ) {
       event.preventDefault()
-      mainWindow.loadURL(bingUrl)
+      // Get cookies
+      mainWindow
+        .loadURL(bingUrl.replace('edgediscover/query', 'edgesvc/shell'))
+        .then(() => {
+          setTimeout(() => {
+            mainWindow.loadURL(bingUrl)
+          }, 3000)
+        })
     }
   })
   // Modify Content Security Policy
@@ -269,10 +276,8 @@ const createWindow = () => {
   // Modify headers
   mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
     (details, callback) => {
-      details.requestHeaders['user-agent'] = userAgent
-      if (details.url !== bingUrl) {
-        details.requestHeaders['x-forwarded-for'] = '1.1.1.1'
-      }
+      details.requestHeaders['User-Agent'] = userAgent
+      details.requestHeaders['X-Forwarded-For'] = '1.1.1.1'
       callback({ requestHeaders: details.requestHeaders, cancel: false })
     }
   )
