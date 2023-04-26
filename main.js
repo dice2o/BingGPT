@@ -197,14 +197,9 @@ const createWindow = () => {
         label: 'Reset',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
-          const session = mainWindow.webContents.session
-          session
-            .clearStorageData({
-              storages: ['localstorage', 'cookies'],
-            })
-            .then(() => {
-              mainWindow.reload()
-            })
+          mainWindow.webContents.session.clearStorageData().then(() => {
+            mainWindow.reload()
+          })
         },
       },
       {
@@ -219,7 +214,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.3',
+        label: 'BingGPT v0.3.4',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -232,7 +227,7 @@ const createWindow = () => {
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.0.0'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.0.0'
   mainWindow.loadURL(bingUrl)
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {

@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const composeWrapper = document.getElementsByClassName(
     'uds_coauthor_wrapper'
   )[0]
-  const composeMain = document.getElementsByClassName('main')[0]
+  const composeMain = document.getElementsByClassName('sidebar')[0]
   const insertBtn = document.getElementById('insert_button')
   const previewText = document.getElementById('preview_text')
   const previewOptions = document.getElementsByClassName('preview-options')[0]
@@ -90,8 +90,7 @@ window.addEventListener('DOMContentLoaded', () => {
     composeWrapper.style.cssText = 'margin-top: -64px'
   }
   if (composeMain) {
-    composeMain.style.cssText =
-      'height: calc(100% - 64px); margin-top: 64px; padding: 20px 10px'
+    composeMain.style.cssText = 'height: calc(100% - 64px); margin-top: 64px'
   }
   if (insertBtn) {
     insertBtn.style.cssText = 'display: none'
@@ -338,9 +337,32 @@ const markdownHandler = (element) => {
       return `> **${content}**`
     },
   })
+  turndownService.addRule('latex', {
+    filter: (node) => {
+      return node.classList.contains('katex-block')
+    },
+    replacement: (content, node) => {
+      return `$$${node.querySelector('annotation').innerHTML}$$`
+    },
+  })
+  turndownService.addRule('inlineLatex', {
+    filter: (node) => {
+      return node.classList.contains('katex')
+    },
+    replacement: (content, node) => {
+      return `$${node.querySelector('annotation').innerHTML}$`
+    },
+  })
   const mdDataURL = Buffer.from(
-    turndownService.turndown(element),
+    turndownService.turndown(element) + '\n',
     'utf-8'
   ).toString('base64')
   ipcRenderer.send('export-data', 'md', mdDataURL)
 }
+
+// Fix copy issue
+window.addEventListener('copy', (event) => {
+  const selection = document.getSelection()
+  event.clipboardData.setData('text/plain', selection.toString())
+  event.preventDefault()
+})
