@@ -214,7 +214,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.4',
+        label: 'BingGPT v0.3.5',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -227,7 +227,7 @@ const createWindow = () => {
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.0.0'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
   mainWindow.loadURL(bingUrl)
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -266,14 +266,6 @@ const createWindow = () => {
       } else {
         return callback({ cancel: false })
       }
-    }
-  )
-  // Modify headers
-  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
-    (details, callback) => {
-      details.requestHeaders['User-Agent'] = userAgent
-      details.requestHeaders['X-Forwarded-For'] = '1.1.1.1'
-      callback({ requestHeaders: details.requestHeaders, cancel: false })
     }
   )
   // Always on top
