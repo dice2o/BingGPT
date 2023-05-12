@@ -36,7 +36,6 @@
 
 ## Usage
 
-- Get access to the early preview of new Bing - [Join the waitlist](https://www.bing.com/new)
 - Sign in to your Microsoft account
 - Start chatting
 
