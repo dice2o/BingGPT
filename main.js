@@ -236,9 +236,9 @@ const createWindow = () => {
             type: 'input',
           }, mainWindow)
             .then((r) => {
-              if (r) {
-                proxyHandler(r)
-              }
+              // if (r) {
+              proxyHandler(r)
+              // }
             })
         },
       },
@@ -270,8 +270,7 @@ const createWindow = () => {
     ],
   })
   // Load Bing
-  const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
-    isDarkMode ? 'dark' : 'light'
+  const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${isDarkMode ? 'dark' : 'light'
     }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   const userAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
@@ -359,7 +358,10 @@ const createWindow = () => {
   }
   // Proxy
   const proxyHandler = (newProxy) => {
-    config.set('proxy', newProxy)
+    if (newProxy)
+      config.set('proxy', newProxy)
+    else
+      config.delete('proxy')
     dialog
       .showMessageBox(mainWindow, {
         type: 'question',
@@ -367,7 +369,7 @@ const createWindow = () => {
         message: 'Proxy Saved',
         detail: 'Do you want to reload BingGPT now?',
       })
-      .then((result) => {
+      .then(result => {
         if (result.response === 0) {
           mainWindow.close()
           createWindow()
