@@ -17,26 +17,25 @@
 
 ### Windows
 
-- [BingGPT-0.3.4-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-win32-x64-Setup.exe) (Installer)
-- [BingGPT-0.3.4-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-win32-x64.zip) (Portable)
-- [BingGPT-0.3.4-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-win32-arm64-Setup.exe) (Installer)
-- [BingGPT-0.3.4-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-win32-arm64.zip) (Portable)
+- [BingGPT-0.3.5-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-win32-x64-Setup.exe) (Installer)
+- [BingGPT-0.3.5-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-win32-x64.zip) (Portable)
+- [BingGPT-0.3.5-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-win32-arm64-Setup.exe) (Installer)
+- [BingGPT-0.3.5-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-win32-arm64.zip) (Portable)
 
 ### macOS
 
-- [BingGPT-0.3.4-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-darwin-arm64.dmg) (Apple Silicon)
-- [BingGPT-0.3.4-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-darwin-x64.dmg) (Intel chips)
+- [BingGPT-0.3.5-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-darwin-arm64.dmg) (Apple Silicon)
+- [BingGPT-0.3.5-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-darwin-x64.dmg) (Intel chips)
 
 ### Linux
 
-- [BingGPT-0.3.4-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-linux-x64.deb)
-- [BingGPT-0.3.4-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-linux-arm64.deb)
-- [BingGPT-0.3.4-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-linux-x64.rpm)
-- [BingGPT-0.3.4-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.4/BingGPT-0.3.4-linux-arm64.rpm)
+- [BingGPT-0.3.5-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-linux-x64.deb)
+- [BingGPT-0.3.5-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-linux-arm64.deb)
+- [BingGPT-0.3.5-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-linux-x64.rpm)
+- [BingGPT-0.3.5-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.5/BingGPT-0.3.5-linux-arm64.rpm)
 
 ## Usage
 
-- Get access to the early preview of new Bing - [Join the waitlist](https://www.bing.com/new)
 - Sign in to your Microsoft account
 - Start chatting
 
