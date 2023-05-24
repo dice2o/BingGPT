@@ -268,6 +268,20 @@ const createWindow = () => {
       }
     }
   )
+  
+  // Modify headers
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders({
+    urls:[
+      'https://edgeservices.bing.com/edgesvc/turing/*/create',
+    ]
+  },
+    (details, callback) => {
+      details.requestHeaders['X-Forwarded-For'] = '1.1.1.1'
+      details.requestHeaders['User-Agent'] = userAgent
+      callback({ requestHeaders: details.requestHeaders, cancel: false })
+    }
+  )
+  
   // Always on top
   const alwaysOnTopHandler = () => {
     config.set('alwaysOnTop', !mainWindow.isAlwaysOnTop())
