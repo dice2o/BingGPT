@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
       chatWrapper.style.cssText = 'margin-top: -76px'
     }
     if (serp) {
-      ipcRenderer.send('get-font-size')
+      ipcRenderer.send('init-style')
     }
   }
   // Compose page
@@ -206,18 +206,36 @@ ipcRenderer.on('switch-tone', (event, direction) => {
 // Set font size
 ipcRenderer.on('set-font-size', (event, size) => {
   try {
-    const serp = document.getElementsByTagName('cib-serp')
-    if (serp) {
-      const conversationMain = document
-        .getElementsByTagName('cib-serp')[0]
-        .shadowRoot.getElementById('cib-conversation-main')
-      conversationMain.style.cssText += `--cib-type-body1-font-size: ${size}px; --cib-type-body1-strong-font-size: ${size}px; --cib-type-body2-font-size: ${size}px; --cib-type-body2-line-height: ${
-        size + 6
-      }px`
-      serp[0].style.cssText += `--cib-type-body2-font-size: ${
-        size > 15 ? size + 2 : 16
-      }px; --cib-type-body2-line-height: ${size > 15 ? size + 8 : 22}px`
-    }
+    const serp = document.querySelector('.cib-serp-main')
+    const conversationMain = serp.shadowRoot.getElementById(
+      'cib-conversation-main'
+    )
+    conversationMain.style.cssText += `--cib-type-body1-font-size: ${size}px; --cib-type-body1-strong-font-size: ${size}px; --cib-type-body2-font-size: ${size}px; --cib-type-body2-line-height: ${
+      size + 6
+    }px`
+    serp.style.cssText += `--cib-type-body2-font-size: ${
+      size > 15 ? size + 2 : 16
+    }px; --cib-type-body2-line-height: ${size > 15 ? size + 8 : 22}px`
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Set initial style
+ipcRenderer.on('set-initial-style', (event) => {
+  try {
+    const serp = document.querySelector('.cib-serp-main')
+    const conversationMain = serp.shadowRoot.getElementById(
+      'cib-conversation-main'
+    )
+    // Center element
+    const scroller = conversationMain.shadowRoot.querySelector('.scroller')
+    const actionBarMain = serp.shadowRoot.getElementById('cib-action-bar-main')
+    const containerControl =
+      conversationMain.shadowRoot.querySelector('.container-control')
+    scroller.style.cssText += 'justify-content: center'
+    actionBarMain.style.cssText += 'max-width: unset'
+    containerControl.style.cssText += 'flex-direction: column'
   } catch (err) {
     console.log(err)
   }
@@ -247,7 +265,8 @@ ipcRenderer.on('export', (event, format, isDarkMode) => {
           (element.classList.contains('label') ||
             element.classList.contains('hidden') ||
             element.classList.contains('expand-button') ||
-            element.getAttribute('type') === 'meta')
+            element.getAttribute('type') === 'meta' ||
+            element.tagName === 'CIB-TURN-COUNTER')
         ) {
           return true
         }
@@ -323,6 +342,16 @@ const markdownHandler = (element) => {
       return content
     },
   })
+  turndownService.addRule('learnMore', {
+    filter: (node) => {
+      return node.classList.contains('learn-more')
+    },
+    replacement: (content, node) => {
+      return node.parentNode.querySelector('a[class="attribution-item"]')
+        ? content
+        : ''
+    },
+  })
   turndownService.addRule('footerLink', {
     filter: (node) => {
       return node.classList.contains('attribution-item')
@@ -337,8 +366,8 @@ const markdownHandler = (element) => {
     filter: (node) => {
       return node.classList.contains('text-message-content')
     },
-    replacement: (content) => {
-      return `> **${content}**`
+    replacement: (content, node) => {
+      return `> **${node.firstElementChild.innerHTML}**`
     },
   })
   turndownService.addRule('latex', {
@@ -346,7 +375,7 @@ const markdownHandler = (element) => {
       return node.classList.contains('katex-block')
     },
     replacement: (content, node) => {
-      return `$$${node.querySelector('annotation').innerHTML}$$`
+      return `$$${node.querySelector('annotation').innerHTML.trim()}$$\n\n`
     },
   })
   turndownService.addRule('inlineLatex', {
@@ -354,7 +383,7 @@ const markdownHandler = (element) => {
       return node.classList.contains('katex')
     },
     replacement: (content, node) => {
-      return `$${node.querySelector('annotation').innerHTML}$`
+      return `$${node.querySelector('annotation').innerHTML.trim()}$`
     },
   })
   const mdDataURL = Buffer.from(

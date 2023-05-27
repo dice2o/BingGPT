@@ -214,7 +214,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.5',
+        label: 'BingGPT v0.3.6',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -226,8 +226,6 @@ const createWindow = () => {
   const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
-  const userAgent =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
   mainWindow.loadURL(bingUrl)
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -396,17 +394,18 @@ app.whenReady().then(() => {
         })
     }
   })
-  // Get font size settings
-  ipcMain.on('get-font-size', () => {
+  // Init style
+  ipcMain.on('init-style', () => {
     const fontSize = config.get('fontSize')
-    if (fontSize !== 14) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (fontSize !== 14) {
         BrowserWindow.getAllWindows()[0].webContents.send(
           'set-font-size',
           fontSize
         )
-      }, 1000)
-    }
+      }
+      BrowserWindow.getAllWindows()[0].webContents.send('set-initial-style')
+    }, 1000)
   })
   // Error message
   ipcMain.on('error', (event, detail) => {
