@@ -49,7 +49,7 @@ const createWindow = () => {
     titleBarStyle: 'hidden',
     titleBarOverlay: true,
     titleBarOverlay: {
-      color: isDarkMode ? '#3b3b3b' : '#ffffff',
+      color: isDarkMode ? '#333333' : '#ffffff',
       symbolColor: isDarkMode ? '#eeeeee' : '#1c1c1c',
     },
     webPreferences: {
