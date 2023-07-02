@@ -42,7 +42,7 @@ const createWindow = () => {
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
-    backgroundColor: isDarkMode ? '#2b2b2b' : '#f3f3f3',
+    backgroundColor: isDarkMode ? '#1c1c1c' : '#eeeeee',
     icon: 'icon.png',
     width: 601,
     height: 800,
@@ -50,7 +50,7 @@ const createWindow = () => {
     titleBarOverlay: true,
     titleBarOverlay: {
       color: isDarkMode ? '#3b3b3b' : '#ffffff',
-      symbolColor: isDarkMode ? '#f3f3f3' : '#2b2b2b',
+      symbolColor: isDarkMode ? '#eeeeee' : '#1c1c1c',
     },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -214,7 +214,7 @@ const createWindow = () => {
         },
       },
       {
-        label: 'BingGPT v0.3.6',
+        label: 'BingGPT v0.3.7',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
@@ -351,6 +351,13 @@ const createWindow = () => {
             event.preventDefault()
           }
       }
+    }
+  })
+  // Replace compose page
+  mainWindow.webContents.on('dom-ready', () => {
+    const url = mainWindow.webContents.getURL()
+    if (url === bingUrl) {
+      mainWindow.webContents.send('replace-compose-page', isDarkMode)
     }
   })
 }
