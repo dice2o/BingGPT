@@ -8,6 +8,7 @@ const {
   BrowserWindow,
 } = require('electron')
 const contextMenu = require('electron-context-menu')
+const prompt = require('electron-prompt')
 const Store = require('electron-store')
 const path = require('path')
 const fs = require('fs')
@@ -27,6 +28,10 @@ const configSchema = {
     type: 'boolean',
     default: false,
   },
+  proxy: {
+    type: 'string',
+    default: '',
+  },
 }
 const config = new Store({ schema: configSchema, clearInvalidConfig: true })
 
@@ -37,8 +42,8 @@ const createWindow = () => {
     theme === 'system'
       ? nativeTheme.shouldUseDarkColors
       : theme === 'dark'
-      ? true
-      : false
+        ? true
+        : false
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
@@ -65,6 +70,11 @@ const createWindow = () => {
   const locale = app.getLocale() || 'en-US'
   // Hide main menu (Windows)
   Menu.setApplicationMenu(null)
+  // Set proxy
+  const proxy = config.get('proxy')
+  if (proxy) {
+    mainWindow.webContents.session.setProxy({ proxyRules: proxy })
+  }
   // Create context menu
   contextMenu({
     window: mainWindow.webContents,
@@ -207,6 +217,26 @@ const createWindow = () => {
         visible: parameters.selectionText.trim().length === 0,
       },
       {
+        label: 'Proxy',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          prompt({
+            title: 'Proxy',
+            label: 'Proxy:',
+            value: proxy,
+            inputAttrs: {
+              type: 'url',
+            },
+            type: 'input',
+          }, mainWindow)
+            .then((r) => {
+              if (r) {
+                proxyHandler(r)
+              }
+            })
+        },
+      },
+      {
         label: 'Feedback',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
@@ -279,6 +309,23 @@ const createWindow = () => {
         type: 'question',
         buttons: ['Yes', 'No'],
         message: 'Theme Saved',
+        detail: 'Do you want to reload BingGPT now?',
+      })
+      .then((result) => {
+        if (result.response === 0) {
+          mainWindow.close()
+          createWindow()
+        }
+      })
+  }
+  // Proxy
+  const proxyHandler = (newProxy) => {
+    config.set('proxy', newProxy)
+    dialog
+      .showMessageBox(mainWindow, {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        message: 'Proxy Saved',
         detail: 'Do you want to reload BingGPT now?',
       })
       .then((result) => {

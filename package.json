@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "electron-context-menu": "^3.6.1",
+    "electron-prompt": "^1.7.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "html2canvas": "^1.4.1",
