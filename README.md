@@ -13,6 +13,8 @@
    </a>
 </p>
 
+English | [中文](./README_cn.md)
+
 ## Install
 
 ### Windows
