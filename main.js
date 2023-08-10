@@ -41,7 +41,7 @@ const createWindow = () => {
       : false
   // Create window
   const mainWindow = new BrowserWindow({
-    title: 'BingGPT',
+    title: 'Merlin-Ai',
     backgroundColor: isDarkMode ? '#1c1c1c' : '#eeeeee',
     icon: 'icon.png',
     width: 601,
@@ -279,7 +279,7 @@ const createWindow = () => {
         type: 'question',
         buttons: ['Yes', 'No'],
         message: 'Theme Saved',
-        detail: 'Do you want to reload BingGPT now?',
+        detail: 'Do you want to reload Merlin-Ai now?',
       })
       .then((result) => {
         if (result.response === 0) {
