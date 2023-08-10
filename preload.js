@@ -5,7 +5,7 @@ const TurndownService = require('turndown')
 
 window.addEventListener('DOMContentLoaded', () => {
   // Change page title
-  document.title = 'BingGPT'
+  document.title = 'Merlij-Ai'
   // Body
   const body = document.body
   if (body) {

@@ -1,7 +1,7 @@
 module.exports = {
   packagerConfig: {
-    appCopyright: 'Copyright © 2023 dice2o',
-    appBundleId: 'com.dice2o.binggpt',
+    appCopyright: 'Copyright © 2023 7LouisC',
+    appBundleId: 'com.7LouisC.binggpt',
     icon: 'icon',
     platforms: ['darwin', 'linux', 'win32'],
     arch: ['x64', 'arm64'],
@@ -12,9 +12,9 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        iconUrl: 'https://github.com/dice2o/BingGPT/raw/main/icon.ico',
+        iconUrl: 'https://github.com/7LouisC/BingGPT/raw/main/icon.ico',
         setupIcon: 'icon.ico',
-        authors: 'dice2o',
+        authors: '7LouisC',
         description: 'AI-powered copilot',
       },
     },
@@ -41,8 +41,8 @@ module.exports = {
           productDescription: 'AI-powered copilot',
           version: '0.3.7',
           categories: ['Utility'],
-          maintainer: 'dice2o',
-          homepage: 'https://github.com/dice2o/BingGPT',
+          maintainer: '7LouisC',
+          homepage: 'https://github.com/7LouisC/BingGPT',
           icon: 'icon.png',
         },
       },
@@ -58,8 +58,8 @@ module.exports = {
           productDescription: 'AI-powered copilot',
           version: '0.3.7',
           categories: ['Utility'],
-          maintainer: 'dice2o',
-          homepage: 'https://github.com/dice2o/BingGPT',
+          maintainer: '7LouisC',
+          homepage: 'https://github.com/7LouisC/BingGPT',
           icon: 'icon.png',
         },
       },
