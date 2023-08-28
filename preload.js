@@ -39,9 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
         'https://www.bing.com/rewards/authcheck?ru=%2Fmsrewards%2Fapi%2Fv1%2Fenroll%3Fpubl%3DBINGIP%26crea%3DMY00IA%26pn%3Dbingcopilotwaitlist%26partnerId%3DBingRewards%26pred%3Dtrue%26wtc%3Dshoreline/discover%26ru%3Dhttps%253a%252f%252fedgeservices.bing.com%252fedgesvc%252furlredirect%253fscenario%253dwaitlist'
       )
     }
-    if (previewBanner) {
-      previewBanner.style.cssText = 'margin-top: 44px'
-    }
     if (previewCloseBtn) {
       previewCloseBtn.style.cssText = 'display: none'
     }
@@ -55,19 +52,28 @@ window.addEventListener('DOMContentLoaded', () => {
     const headerWrapper = document.getElementsByClassName('wrapper-unfixed')[0]
     const tabWrapper = document.getElementsByClassName('uds-hdr-wrapper')[0]
     const tabs = document.getElementsByClassName('uds_tab_hdr')[0]
-    const insightsTab = document.getElementById('insights')
+    const aboutTab = document.getElementById('about')
+    const synopsisTab = document.getElementById('synopsis')
+    const siteinfoTab = document.getElementById('siteinfo')
     if (headerWrapper) {
       headerWrapper.style.cssText = 'height: 64px'
     }
     if (tabWrapper) {
-      tabWrapper.style.cssText =
-        'height: 64px; display: flex; justify-content: center; align-items: end; -webkit-user-select: none'
+      tabWrapper.style.cssText = 'height: 64px; -webkit-user-select: none'
     }
     if (tabs) {
-      tabs.style.cssText = 'padding-left: 40px'
+      tabs.style.cssText =
+        'height: 64px; padding-top: 0; justify-content: center; align-items: end'
+      tabs.firstChild.style.cssText = 'margin-left: 19px'
     }
-    if (insightsTab) {
-      insightsTab.style.cssText = 'display: none'
+    if (aboutTab) {
+      aboutTab.style.cssText = 'display: none'
+    }
+    if (synopsisTab) {
+      synopsisTab.style.cssText = 'display: none'
+    }
+    if (siteinfoTab) {
+      siteinfoTab.style.cssText = 'display: none'
     }
   }
   // Chat area of main page
@@ -79,11 +85,11 @@ window.addEventListener('DOMContentLoaded', () => {
       chatWrapper.style.cssText = 'margin-top: -76px'
     }
     if (serp) {
-      ipcRenderer.send('get-font-size')
+      ipcRenderer.send('init-style')
     }
   }
   // Compose page
-  const composeWrapper = document.getElementsByClassName(
+  /*const composeWrapper = document.getElementsByClassName(
     'uds_coauthor_wrapper'
   )[0]
   const composeMain = document.getElementsByClassName('sidebar')[0]
@@ -104,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   if (previewOptions) {
     previewOptions.style.cssText = 'bottom: 1px'
-  }
+  }*/
 })
 
 // New topic
@@ -113,7 +119,7 @@ ipcRenderer.on('new-topic', () => {
     const newTopicBtn = document
       .getElementsByTagName('cib-serp')[0]
       .shadowRoot.getElementById('cib-action-bar-main')
-      .shadowRoot.querySelector('button[class="button-compose"]')
+      .shadowRoot.querySelector('.button-compose')
     if (newTopicBtn) {
       newTopicBtn.click()
     }
@@ -128,6 +134,7 @@ ipcRenderer.on('focus-on-textarea', () => {
     const textarea = document
       .getElementsByTagName('cib-serp')[0]
       .shadowRoot.getElementById('cib-action-bar-main')
+      .shadowRoot.querySelector('cib-text-input')
       .shadowRoot.getElementById('searchbox')
     if (textarea) {
       textarea.focus()
@@ -175,6 +182,7 @@ ipcRenderer.on('switch-tone', (event, direction) => {
     const toneOptions = document
       .getElementsByTagName('cib-serp')[0]
       .shadowRoot.getElementById('cib-conversation-main')
+      .shadowRoot.querySelector('cib-welcome-container')
       .shadowRoot.querySelector('cib-tone-selector')
       .shadowRoot.getElementById('tone-options')
     if (toneOptions) {
@@ -206,18 +214,43 @@ ipcRenderer.on('switch-tone', (event, direction) => {
 // Set font size
 ipcRenderer.on('set-font-size', (event, size) => {
   try {
-    const serp = document.getElementsByTagName('cib-serp')
-    if (serp) {
-      const conversationMain = document
-        .getElementsByTagName('cib-serp')[0]
-        .shadowRoot.getElementById('cib-conversation-main')
-      conversationMain.style.cssText += `--cib-type-body1-font-size: ${size}px; --cib-type-body1-strong-font-size: ${size}px; --cib-type-body2-font-size: ${size}px; --cib-type-body2-line-height: ${
+    const serp = document.querySelector('.cib-serp-main')
+    const conversationMain = serp.shadowRoot.getElementById(
+      'cib-conversation-main'
+    )
+    conversationMain.style.cssText =
+      serp.style.cssText += `--cib-type-body1-font-size: ${size}px; --cib-type-body1-strong-font-size: ${size}px; --cib-type-body2-font-size: ${size}px; --cib-type-body2-line-height: ${
         size + 6
       }px`
-      serp[0].style.cssText += `--cib-type-body2-font-size: ${
-        size > 15 ? size + 2 : 16
-      }px; --cib-type-body2-line-height: ${size > 15 ? size + 8 : 22}px`
-    }
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Set initial style
+ipcRenderer.on('set-initial-style', (event) => {
+  try {
+    const serp = document.querySelector('.cib-serp-main')
+    const conversationMain = serp.shadowRoot.getElementById(
+      'cib-conversation-main'
+    )
+    // Center element
+    const scroller = conversationMain.shadowRoot.querySelector('.scroller')
+    const actionBarMain = serp.shadowRoot.getElementById('cib-action-bar-main')
+    scroller.style.cssText += 'justify-content: center'
+    actionBarMain.style.cssText += 'max-width: unset'
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// Replace compose page
+ipcRenderer.on('replace-compose-page', (event, isDarkMode) => {
+  try {
+    const composeModule = document.getElementById('underside-coauthor-module')
+    composeModule.innerHTML = `<iframe id="coauthor" name="coauthor" frameborder="0" csp="frame-src 'none'; base-uri 'self'; require-trusted-types-for 'script'" data-bm="4" src="https://edgeservices.bing.com/edgesvc/compose?udsframed=1&amp;form=SHORUN&amp;clientscopes=chat,noheader,coauthor,channeldev,&amp;${
+      isDarkMode ? 'dark' : 'light'
+    }schemeovr=1" style="width: 100%; height: calc(100% - 64px); position: absolute; overflow: hidden"></iframe>`
   } catch (err) {
     console.log(err)
   }
@@ -237,7 +270,8 @@ ipcRenderer.on('export', (event, format, isDarkMode) => {
       allowTaint: true,
       ignoreElements: (element) => {
         if (
-          element.classList.contains('intro') ||
+          element.tagName === 'CIB-WELCOME-CONTAINER' ||
+          element.tagName === 'CIB-NOTIFICATION-CONTAINER' ||
           element.getAttribute('type') === 'host'
         ) {
           return true
@@ -247,21 +281,18 @@ ipcRenderer.on('export', (event, format, isDarkMode) => {
           (element.classList.contains('label') ||
             element.classList.contains('hidden') ||
             element.classList.contains('expand-button') ||
-            element.getAttribute('type') === 'meta')
+            element.getAttribute('type') === 'meta' ||
+            element.tagName === 'CIB-TURN-COUNTER' ||
+            element.tagName === 'BUTTON')
         ) {
           return true
         }
       },
       onclone: (doc) => {
         const bodyWidth = doc.body.clientWidth
-        const paddingX = bodyWidth > 767 ? '32px' : '16px'
-        const paddingBottom = bodyWidth > 767 ? '48px' : '36px'
-        const paddingTop =
-          chatMain.getElementsByTagName('cib-chat-turn')[0].offsetHeight === 0
-            ? '0'
-            : bodyWidth > 767
-            ? '24px'
-            : '18px'
+        const paddingX = bodyWidth > 832 ? '32px' : '16px'
+        const paddingBottom = '48px'
+        const paddingTop = bodyWidth > 832 ? '24px' : '0px'
         doc.getElementById(
           'cib-chat-main'
         ).style.cssText = `padding: ${paddingTop} ${paddingX} ${paddingBottom} ${paddingX}`
@@ -323,6 +354,16 @@ const markdownHandler = (element) => {
       return content
     },
   })
+  turndownService.addRule('learnMore', {
+    filter: (node) => {
+      return node.classList.contains('learn-more')
+    },
+    replacement: (content, node) => {
+      return node.parentNode.querySelector('a[class="attribution-item"]')
+        ? content
+        : ''
+    },
+  })
   turndownService.addRule('footerLink', {
     filter: (node) => {
       return node.classList.contains('attribution-item')
@@ -337,8 +378,12 @@ const markdownHandler = (element) => {
     filter: (node) => {
       return node.classList.contains('text-message-content')
     },
-    replacement: (content) => {
-      return `> **${content}**`
+    replacement: (content, node) => {
+      return `> **${node.firstElementChild.innerHTML}**${
+        node.querySelector('img')
+          ? `\n> ![](${node.querySelector('img').getAttribute('src')})`
+          : ''
+      }`
     },
   })
   turndownService.addRule('latex', {
@@ -346,7 +391,7 @@ const markdownHandler = (element) => {
       return node.classList.contains('katex-block')
     },
     replacement: (content, node) => {
-      return `$$${node.querySelector('annotation').innerHTML}$$`
+      return `$$${node.querySelector('annotation').innerHTML.trim()}$$\n`
     },
   })
   turndownService.addRule('inlineLatex', {
@@ -354,7 +399,7 @@ const markdownHandler = (element) => {
       return node.classList.contains('katex')
     },
     replacement: (content, node) => {
-      return `$${node.querySelector('annotation').innerHTML}$`
+      return `$${node.querySelector('annotation').innerHTML.trim()}$`
     },
   })
   const mdDataURL = Buffer.from(
