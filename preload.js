@@ -34,10 +34,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     if (joinLink) {
       joinLink.setAttribute('target', '_self')
-      joinLink.setAttribute(
-        'href',
-        'https://www.bing.com/rewards/authcheck?ru=%2Fmsrewards%2Fapi%2Fv1%2Fenroll%3Fpubl%3DBINGIP%26crea%3DMY00IA%26pn%3Dbingcopilotwaitlist%26partnerId%3DBingRewards%26pred%3Dtrue%26wtc%3Dshoreline/discover%26ru%3Dhttps%253a%252f%252fedgeservices.bing.com%252fedgesvc%252furlredirect%253fscenario%253dwaitlist'
-      )
+      // joinLink.setAttribute(
+      //  'href',
+      //  'https://www.bing.com/rewards/authcheck?ru=%2Fmsrewards%2Fapi%2Fv1%2Fenroll%3Fpubl%3DBINGIP%26crea%3DMY00IA%26pn%3Dbingcopilotwaitlist%26partnerId%3DBingRewards%26pred%3Dtrue%26wtc%3Dshoreline/discover%26ru%3Dhttps%253a%252f%252fedgeservices.bing.com%252fedgesvc%252furlredirect%253fscenario%253dwaitlist'
+      // )
     }
     if (previewCloseBtn) {
       previewCloseBtn.style.cssText = 'display: none'
@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
   // Compose page
-  /*const composeWrapper = document.getElementsByClassName(
+  const composeWrapper = document.getElementsByClassName(
     'uds_coauthor_wrapper'
   )[0]
   const composeMain = document.getElementsByClassName('sidebar')[0]
@@ -110,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   if (previewOptions) {
     previewOptions.style.cssText = 'bottom: 1px'
-  }*/
+  }
 })
 
 // New topic
