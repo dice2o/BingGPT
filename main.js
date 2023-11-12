@@ -54,7 +54,7 @@ const createWindow = () => {
     },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      devTools: false,
+      devTools: true,
       nodeIntegration: true,
     },
   })
@@ -354,12 +354,12 @@ const createWindow = () => {
     }
   })
   // Replace compose page
-  mainWindow.webContents.on('dom-ready', () => {
-    const url = mainWindow.webContents.getURL()
-    if (url === bingUrl) {
-      mainWindow.webContents.send('replace-compose-page', isDarkMode)
-    }
-  })
+  // mainWindow.webContents.on('dom-ready', () => {
+  //  const url = mainWindow.webContents.getURL()
+  //  if (url === bingUrl) {
+  //    mainWindow.webContents.send('replace-compose-page', isDarkMode)
+  //  }
+  // })
 }
 
 app.whenReady().then(() => {

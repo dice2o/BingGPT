@@ -13,7 +13,7 @@
     "make": "electron-forge make"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/cli": "^6.4.2",
     "@electron-forge/maker-deb": "^6.1.1",
     "@electron-forge/maker-dmg": "^6.1.1",
     "@electron-forge/maker-rpm": "^6.1.1",
