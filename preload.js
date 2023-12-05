@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, app, nativeTheme} = require('electron')
 const html2canvas = require('html2canvas')
 const { jsPDF } = require('jspdf')
 const TurndownService = require('turndown')
@@ -17,6 +17,26 @@ window.addEventListener('DOMContentLoaded', () => {
       'position: fixed; top: 0px; height: 32px; width: 100%; -webkit-user-select: none; -webkit-app-region: drag; z-index: 50'
     body.prepend(titleBar)
   }
+
+  //Login Check
+  const isLoginedIn = document.getElementById('underside-sydney-module') != null;
+  // console.log(isLoginedIn);
+  if (!isLoginedIn) {
+    const content = document.getElementById('b_content')
+
+    const error_login = document.createElement("p");
+
+    error_login.style.cssText="display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; width: 100vw; height: 100vh; top: 0; left: 0;"
+
+    const image = require('electron').nativeImage.createFromPath('icon.png')
+
+    error_login.innerHTML = `<a href='https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3a%2f%2fwww.bing.com'><img alt="login" width="200px" height="200px" src='${image.toDataURL()}'></a>` +
+        "<h1 style='margin-bottom: 10px; font-size: 40px; text-align: center;'>Login Needed！</h1>" +
+        "<a style='display: block; margin-top: 10px; font-size: 25px; text-align: center;' href='https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3a%2f%2fwww.bing.com'>Login</a>"
+
+    content.appendChild(error_login);
+  }
+
   // Content
   const content = document.getElementById('b_content')
   if (content) {
