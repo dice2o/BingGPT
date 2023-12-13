@@ -34,14 +34,9 @@ jobs:
         run: |
           npm run package
 
-      # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts
-        run: |
-          npx rimraf "out/!(*.exe|*.dmg|*.deb|*.rpm)"
-
       # step6: upload artifacts
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
           path: 'out/make'
