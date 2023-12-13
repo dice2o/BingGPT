@@ -79,6 +79,22 @@ const createWindow = () => {
         },
       },
       {
+        label: 'Login',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          mainWindow.loadURL(`https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3a%2f%2fwww.bing.com`)
+        },
+      },
+      {
+        label: 'Return To GPT',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          mainWindow.loadURL(`https://edgeservices.bing.com/edgediscover/query?&${
+              isDarkMode ? 'dark' : 'light'
+          }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`)
+        },
+      },
+      {
         label: 'Export',
         visible: parameters.selectionText.trim().length === 0,
         submenu: [
@@ -227,6 +243,9 @@ const createWindow = () => {
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
   mainWindow.loadURL(bingUrl)
+
+  // mainWindow.webContents.openDevTools();
+
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
@@ -353,12 +372,20 @@ const createWindow = () => {
       }
     }
   })
-  // Replace compose page
+  // Replace compose page or reload window
   mainWindow.webContents.on('dom-ready', () => {
     const url = mainWindow.webContents.getURL()
     if (url === bingUrl) {
       mainWindow.webContents.send('replace-compose-page', isDarkMode)
     }
+
+    // console.log(url);
+    if (url === "https://www.bing.com/") {
+      setTimeout(() => {
+        mainWindow.loadURL(bingUrl);
+      }, 3000);
+    }
+
   })
 }
 
