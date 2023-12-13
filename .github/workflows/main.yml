@@ -1,6 +1,9 @@
 name: Build/release
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   release:
@@ -11,21 +14,45 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
+      - name: Install Depentent
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y npm fakeroot
+        
       - name: Check out Git repository
         uses: actions/checkout@v1
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 16
 
-      - name: Build/release Electron app
-        uses: juaneth/electron-forge-builder@v1
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
+      # step3: npm install
+      - name: npm install
+        run: |
+          npm install
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      # step4: build app
+      - name: build app
+        run: |
+          npm run package
+
+      # step5: cleanup artifacts in dist_electron
+      - name: cleanup artifacts
+        run: |
+          npx rimraf "out/!(*.exe|*.dmg|*.deb|*.rpm)"
+
+      # step6: upload artifacts
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: 'out/make'
+
+      # step7: create release
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: "out/make/**"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
