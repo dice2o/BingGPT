@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: 16
 
+      # step5: cleanup artifacts in dist_electron
+      - name: cleanup package lock
+        run: |
+          npx rimraf "package-lock.json"
+
       # step3: npm install
       - name: npm install
         run: |
