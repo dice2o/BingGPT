@@ -32,7 +32,7 @@ jobs:
       # step4: build app
       - name: build app
         run: |
-          npm run package
+          npm run make
 
       # step6: upload artifacts
       - name: upload artifacts
