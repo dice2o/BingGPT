@@ -10,8 +10,8 @@
   <a href="https://opensource.org/licenses/Apache-2.0">
     <img alt="License" src="https://img.shields.io/badge/license-Apache_2.0-green">
   </a>
-  <a href="https://github.com/dice2o/BingGPT/releases">
-    <img alt="Downloads" src="https://img.shields.io/github/downloads/dice2o/BingGPT/total?color=blue">
+  <a href="https://github.com/fangkehou-team/BingGPT/releases">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/fangkehou-team/BingGPT/total?color=blue">
    </a>
 </p>
 
