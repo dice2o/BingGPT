@@ -13,6 +13,8 @@
    </a>
 </p>
 
+English | [中文](./README_zh_CN.md)
+
 ## Info
 
 Modified By Team Fangkehou.
