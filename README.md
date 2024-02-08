@@ -8,31 +8,20 @@
   <a href="https://opensource.org/licenses/Apache-2.0">
     <img alt="License" src="https://img.shields.io/badge/license-Apache_2.0-green">
   </a>
-  <a href="https://github.com/dice2o/BingGPT/releases">
-    <img alt="Downloads" src="https://img.shields.io/github/downloads/dice2o/BingGPT/total?color=blue">
+  <a href="https://github.com/fangkehou-team/BingGPT/releases">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/fangkehou-team/BingGPT/total?color=blue">
    </a>
 </p>
 
+English | [中文](./README_zh_CN.md)
+
+## Info
+
+Modified By Team Fangkehou.
+
 ## Install
 
-### Windows
-
-- [BingGPT-0.3.7-win32-x64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-win32-x64-Setup.exe) (Installer)
-- [BingGPT-0.3.7-win32-x64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-win32-x64.zip) (Portable)
-- [BingGPT-0.3.7-win32-arm64-Setup.exe](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-win32-arm64-Setup.exe) (Installer)
-- [BingGPT-0.3.7-win32-arm64.zip](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-win32-arm64.zip) (Portable)
-
-### macOS
-
-- [BingGPT-0.3.7-darwin-arm64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-darwin-arm64.dmg) (Apple Silicon)
-- [BingGPT-0.3.7-darwin-x64.dmg](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-darwin-x64.dmg) (Intel chips)
-
-### Linux
-
-- [BingGPT-0.3.7-linux-x64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-linux-x64.deb)
-- [BingGPT-0.3.7-linux-arm64.deb](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-linux-arm64.deb)
-- [BingGPT-0.3.7-linux-x64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-linux-x64.rpm)
-- [BingGPT-0.3.7-linux-arm64.rpm](https://github.com/dice2o/BingGPT/releases/download/v0.3.7/BingGPT-0.3.7-linux-arm64.rpm)
+Please go to [Releases page of this repository](https://github.com/fangkehou-team/BingGPT/releases) to get the latest build.
 
 ## Usage
 

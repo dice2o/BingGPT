@@ -1,9 +1,9 @@
 {
   "name": "binggpt",
   "productName": "BingGPT",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "AI-powered copilot",
-  "author": "dice2o",
+  "author": "dice2o, Team Fangkehou",
   "license": "Apache-2.0",
   "main": "main.js",
   "scripts": {
