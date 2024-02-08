@@ -1,0 +1,45 @@
+version: '1.0'
+name: branch-pipeline
+displayName: BranchPipeline
+triggers:
+  trigger: auto
+  push:
+    branches:
+      include:
+        - .*
+      exclude:
+        - master
+stages:
+  - name: compile
+    displayName: 编译
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@nodejs
+        name: build_nodejs
+        displayName: Nodejs 构建
+        nodeVersion: 17.8.0
+        commands:
+          - npm install && rm -rf ./out && npm run package
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./out
+        strategy: {}
+      - step: publish@general_artifacts
+        name: publish_general_artifacts
+        displayName: 上传制品
+        dependArtifact: BUILD_ARTIFACT
+        artifactName: output
+        dependsOn: build_nodejs
+  - name: release
+    displayName: 发布
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: publish@release_artifacts
+        name: publish_release_artifacts
+        displayName: 发布
+        dependArtifact: output
+        version: 1.0.0.0
+        autoIncrement: true

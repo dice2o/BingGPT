@@ -8,6 +8,7 @@ const {
   BrowserWindow,
 } = require('electron')
 const contextMenu = require('electron-context-menu')
+const prompt = require('electron-prompt')
 const Store = require('electron-store')
 const path = require('path')
 const fs = require('fs')
@@ -27,6 +28,14 @@ const configSchema = {
     type: 'boolean',
     default: false,
   },
+  proxy: {
+    type: 'string',
+    default: '',
+  },
+  isDevelopment: {
+    type: 'boolean',
+    default: true,
+  },
 }
 const config = new Store({ schema: configSchema, clearInvalidConfig: true })
 
@@ -37,8 +46,9 @@ const createWindow = () => {
     theme === 'system'
       ? nativeTheme.shouldUseDarkColors
       : theme === 'dark'
-      ? true
-      : false
+        ? true
+        : false
+  const isDevelopment = config.get('isDevelopment', false)
   // Create window
   const mainWindow = new BrowserWindow({
     title: 'BingGPT',
@@ -46,7 +56,7 @@ const createWindow = () => {
     icon: 'icon.png',
     width: 601,
     height: 800,
-    titleBarStyle: 'hidden',
+    titleBarStyle: isDevelopment ? 'default' : 'hidden',
     titleBarOverlay: true,
     titleBarOverlay: {
       color: isDarkMode ? '#333333' : '#ffffff',
@@ -54,7 +64,7 @@ const createWindow = () => {
     },
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      devTools: false,
+      devTools: isDevelopment,
       nodeIntegration: true,
     },
   })
@@ -63,8 +73,14 @@ const createWindow = () => {
   mainWindow.setAlwaysOnTop(alwaysOnTop)
   // Get language
   const locale = app.getLocale() || 'en-US'
-  // Hide main menu (Windows)
-  Menu.setApplicationMenu(null)
+  // Hide main menu (Windows) 
+  if (!isDevelopment) //. Duo to the electron's feature, can't set menu dynamicly
+    Menu.setApplicationMenu(null)
+  // Set proxy
+  const proxy = config.get('proxy')
+  if (proxy) {
+    mainWindow.webContents.session.setProxy({ proxyRules: proxy })
+  }
   // Create context menu
   contextMenu({
     window: mainWindow.webContents,
@@ -76,6 +92,22 @@ const createWindow = () => {
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
           mainWindow.reload()
+        },
+      },
+      {
+        label: 'Login',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          mainWindow.loadURL(`https://www.bing.com/fd/auth/signin?action=interactive&provider=windows_live_id&return_url=https%3a%2f%2fwww.bing.com`)
+        },
+      },
+      {
+        label: 'Return To GPT',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          mainWindow.loadURL(`https://edgeservices.bing.com/edgediscover/query?&${
+              isDarkMode ? 'dark' : 'light'
+          }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`)
         },
       },
       {
@@ -207,6 +239,26 @@ const createWindow = () => {
         visible: parameters.selectionText.trim().length === 0,
       },
       {
+        label: 'Proxy',
+        visible: parameters.selectionText.trim().length === 0,
+        click: () => {
+          prompt({
+            title: 'Proxy',
+            label: 'Proxy:',
+            value: proxy,
+            inputAttrs: {
+              type: 'url',
+            },
+            type: 'input',
+          }, mainWindow)
+            .then((r) => {
+              // if (r) {
+              proxyHandler(r)
+              // }
+            })
+        },
+      },
+      {
         label: 'Feedback',
         visible: parameters.selectionText.trim().length === 0,
         click: () => {
@@ -220,13 +272,29 @@ const createWindow = () => {
           shell.openExternal('https://github.com/dice2o/BingGPT/releases')
         },
       },
+      {
+        type: 'separator',
+        visible: parameters.selectionText.trim().length === 0,
+      },
+      {
+        label: 'Development',
+        type: 'checkbox',
+        checked: isDevelopment,
+        visible: parameters.selectionText.trim().length === 0,
+        click: (menuItem, browserWindow, event) => isDevelopmentHandler(menuItem, browserWindow, event),
+      },
     ],
   })
   // Load Bing
   const bingUrl = `https://edgeservices.bing.com/edgediscover/query?&${
     isDarkMode ? 'dark' : 'light'
   }schemeovr=1&FORM=SHORUN&udscs=1&udsnav=1&setlang=${locale}&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`
+  const userAgent =
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
   mainWindow.loadURL(bingUrl)
+
+  // mainWindow.webContents.openDevTools();
+
   // Open links in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
@@ -271,6 +339,26 @@ const createWindow = () => {
     config.set('alwaysOnTop', !mainWindow.isAlwaysOnTop())
     mainWindow.setAlwaysOnTop(!mainWindow.isAlwaysOnTop())
   }
+  // is Development Handler
+  const isDevelopmentHandler = (menuItem, browserWindow, event) => {
+
+    dialog
+      .showMessageBox(browserWindow, {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        message: 'isDevelopment Saved',
+        detail: 'Do you want to reload BingGPT now?',
+      })
+      .then((result) => {
+        if (result.response === 0) {
+          config.set('isDevelopment', !isDevelopment)
+        }
+        return result
+      }).then(l => {
+        browserWindow.close()
+        createWindow()
+      })
+  }
   // Theme
   const themeHandler = (newTheme) => {
     config.set('theme', newTheme)
@@ -282,6 +370,26 @@ const createWindow = () => {
         detail: 'Do you want to reload BingGPT now?',
       })
       .then((result) => {
+        if (result.response === 0) {
+          mainWindow.close()
+          createWindow()
+        }
+      })
+  }
+  // Proxy
+  const proxyHandler = (newProxy) => {
+    if (newProxy)
+      config.set('proxy', newProxy)
+    else
+      config.delete('proxy')
+    dialog
+      .showMessageBox(mainWindow, {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        message: 'Proxy Saved',
+        detail: 'Do you want to reload BingGPT now?',
+      })
+      .then(result => {
         if (result.response === 0) {
           mainWindow.close()
           createWindow()
@@ -353,12 +461,20 @@ const createWindow = () => {
       }
     }
   })
-  // Replace compose page
+  // Replace compose page or reload window
   mainWindow.webContents.on('dom-ready', () => {
     const url = mainWindow.webContents.getURL()
     if (url === bingUrl) {
       mainWindow.webContents.send('replace-compose-page', isDarkMode)
     }
+
+    // console.log(url);
+    if (url === "https://www.bing.com/") {
+      setTimeout(() => {
+        mainWindow.loadURL(bingUrl);
+      }, 3000);
+    }
+
   })
 }
 
